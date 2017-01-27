@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<muzika>
+	<grojarastis pavadinimas="Rock">
+		<atlikejas pavadinimas="Thousand foot krutch">
+			<albumas pavadinimas="Phenomenon" metai="2003" trukme="37:35">
+				<prodiuseris vardas="Aaron Sprinkle">
+					<kurinys>	
+						<pavadinimas>Last Words</pavadinimas>
+							<daina trukme="2:48"></daina>
+						<pavadinimas>Step to Me</pavadinimas>
+							<daina trukme="3:00"></daina>
+						<pavadinimas>This Is a Call</pavadinimas>
+							<daina trukme="3:49"></daina>
+						<pavadinimas>Quicken</pavadinimas>
+							<daina trukme="2:51"></daina>
+						<pavadinimas>Bounce</pavadinimas>
+							<daina trukme="3:06"></daina>
+					</kurinys>
+				</prodiuseris>
+			</albumas>
+			<albumas pavadinimas="Welcome to the masquerade">
+				<albumas metai="2009">
+					<albumas trukme="">
+						<daina>	
+							<pavadinimas>Fire It Up</pavadinimas>
+							<pavadinimas>Scream</pavadinimas>
+							<pavadinimas>Look Away</pavadinimas>
+							<pavadinimas>Outta Control</pavadinimas>
+							<pavadinimas>Smack Down</pavadinimas>
+						</daina>
+					</albumas>
+				</albumas>
+			</albumas>
+			<albumas pavadinimas="The End Is Where We Begin">
+				<albumas metai="2012">
+					<albumas trukme="">
+						<daina>	
+							<pavadinimas>I Get Wicked</pavadinimas>
+							<pavadinimas>Courtesy Call</pavadinimas>
+							<pavadinimas>War of Change</pavadinimas>
+							<pavadinimas>Down</pavadinimas>
+							<pavadinimas>Fly on the Wall</pavadinimas>
+						</daina>
+					</albumas>
+				</albumas>
+			</albumas>					
+		</atlikejas>
+		<atlikejas pavadinimas="Three Days Grace">
+			<albumas pavadinimas="Life Starts Now">
+				<albumas metai="2009">
+					<albumas trukme="43:34">
+						<daina>	
+							<pavadinimas>Bitter Taste</pavadinimas>
+							<pavadinimas>Break</pavadinimas>
+							<pavadinimas>No More</pavadinimas>
+							<pavadinimas>Last to Know</pavadinimas>
+							<pavadinimas>Goin' Down</pavadinimas>
+						</daina>
+					</albumas>
+				</albumas>
+			</albumas>
+		</atlikejas>
+	</grojarastis>
+</muzika>
