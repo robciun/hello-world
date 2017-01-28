@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<!-- schema -->
+<xs:element name="muzika">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="grojarastis" type="xs:string"/>
+			<xs:element name="atlikejas" type="xs:string"/>
+			<xs:element name="albumas" type="xs:string"/>
+			<xs:element name="metai" type="xs:integer"/>
+			<xs:element name="trukme" type="xs:string"/>
+			<xs:element name="prodiuseris" type="xs:string"/>
+			<xs:element name="kurinys" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="kurinys">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="daina" type="xs:string"/>
+				<xs:attribute name="trukme" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+</xs:schema>
+
+<!-- music -->
+<muzika>
+	<grojarastis pavadinimas="Rock">
+		<atlikejas pavadinimas="Thousand foot krutch">
+			<albumas pavadinimas="Phenomenon" metai="2003" trukme="37:35">
+				<prodiuseris vardas="Aaron Sprinkle">
+					<kurinys>	
+						<daina trukme="2:48">Last Words</daina>
+						<daina trukme="3:00">Step to Me</daina>
+						<daina trukme="3:49">This Is a Call</daina>
+						<daina trukme="2:51">Quicken</daina>
+						<daina trukme="3:06">Bounce</daina>
+					</kurinys>
+				</prodiuseris>
+			</albumas>
+			<albumas pavadinimas="Welcome to the masquerade">
+				<albumas metai="2009">
+					<albumas trukme="">
+						<daina>	
+							<pavadinimas>Fire It Up</pavadinimas>
+							<pavadinimas>Scream</pavadinimas>
+							<pavadinimas>Look Away</pavadinimas>
+							<pavadinimas>Outta Control</pavadinimas>
+							<pavadinimas>Smack Down</pavadinimas>
+						</daina>
+					</albumas>
+				</albumas>
+			</albumas>
+			<albumas pavadinimas="The End Is Where We Begin">
+				<albumas metai="2012">
+					<albumas trukme="">
+						<daina>	
+							<pavadinimas>I Get Wicked</pavadinimas>
+							<pavadinimas>Courtesy Call</pavadinimas>
+							<pavadinimas>War of Change</pavadinimas>
+							<pavadinimas>Down</pavadinimas>
+							<pavadinimas>Fly on the Wall</pavadinimas>
+						</daina>
+					</albumas>
+				</albumas>
+			</albumas>					
+		</atlikejas>
+		<atlikejas pavadinimas="Three Days Grace">
+			<albumas pavadinimas="Life Starts Now">
+				<albumas metai="2009">
+					<albumas trukme="43:34">
+						<daina>	
+							<pavadinimas>Bitter Taste</pavadinimas>
+							<pavadinimas>Break</pavadinimas>
+							<pavadinimas>No More</pavadinimas>
+							<pavadinimas>Last to Know</pavadinimas>
+							<pavadinimas>Goin' Down</pavadinimas>
+						</daina>
+					</albumas>
+				</albumas>
+			</albumas>
+		</atlikejas>
+	</grojarastis>
+</muzika>
