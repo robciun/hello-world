@@ -1,20 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<!-- schema -->
+<xs:element name="muzika">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="grojarastis" type="xs:string"/>
+			<xs:element name="atlikejas" type="xs:string"/>
+			<xs:element name="albumas" type="xs:string"/>
+			<xs:element name="metai" type="xs:integer"/>
+			<xs:element name="trukme" type="xs:string"/>
+			<xs:element name="prodiuseris" type="xs:string"/>
+			<xs:element name="kurinys" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+<xs:element name="kurinys">
+	<xs:complexType>
+		<xs:sequence>
+			<xs:element name="daina" type="xs:string"/>
+				<xs:attribute name="trukme" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+
+</xs:schema>
+
+<!-- music -->
 <muzika>
 	<grojarastis pavadinimas="Rock">
 		<atlikejas pavadinimas="Thousand foot krutch">
 			<albumas pavadinimas="Phenomenon" metai="2003" trukme="37:35">
 				<prodiuseris vardas="Aaron Sprinkle">
 					<kurinys>	
-						<pavadinimas>Last Words</pavadinimas>
-							<daina trukme="2:48"></daina>
-						<pavadinimas>Step to Me</pavadinimas>
-							<daina trukme="3:00"></daina>
-						<pavadinimas>This Is a Call</pavadinimas>
-							<daina trukme="3:49"></daina>
-						<pavadinimas>Quicken</pavadinimas>
-							<daina trukme="2:51"></daina>
-						<pavadinimas>Bounce</pavadinimas>
-							<daina trukme="3:06"></daina>
+						<daina trukme="2:48">Last Words</daina>
+						<daina trukme="3:00">Step to Me</daina>
+						<daina trukme="3:49">This Is a Call</daina>
+						<daina trukme="2:51">Quicken</daina>
+						<daina trukme="3:06">Bounce</daina>
 					</kurinys>
 				</prodiuseris>
 			</albumas>
