@@ -279,3 +279,7 @@ p{
    color: transparent;
    text-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
+
+.list-inline{display:block;}
+.list-inline li{display:inline-block;}
+.list-inline li:after{content:'|'; margin:0 10px;}

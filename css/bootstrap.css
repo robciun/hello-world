@@ -3522,6 +3522,8 @@ tbody.collapse.in {
   outline: 0;
 }
 .dropdown-menu {
+	left: 27% !important;
+	
   position: absolute;
   top: 100%;
   left: 0;
@@ -6760,6 +6762,11 @@ button.close {
   }
 }
 
+.btn-xl {
+    padding: 7px 50px;
+    font-size: 15px;
+    border-radius: 10px;
+}
 
 
 /*# sourceMappingURL=bootstrap.css.map */
