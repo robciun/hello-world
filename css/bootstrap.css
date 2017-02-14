@@ -6768,5 +6768,12 @@ button.close {
     border-radius: 10px;
 }
 
+span.glyphicon-play-circle {
+    font-size: 2.5em;
+}
+
+span.glyphicon-blackboard {
+    font-size: 2.5em;
+}
 
 /*# sourceMappingURL=bootstrap.css.map */
