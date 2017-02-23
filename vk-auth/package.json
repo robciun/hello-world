@@ -5,6 +5,7 @@
   "main": "service.js",
   "dependencies": {
     "express": "^4.14.1",
+	"express-session":"1.15.1",
     "soap": "^0.18.0",
 	"body-parser": "^1.16.1"
   },
