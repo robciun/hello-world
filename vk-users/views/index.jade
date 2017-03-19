@@ -1,0 +1,56 @@
+extends layout
+
+block content
+	h1= title
+	p Welcome to our test
+	
+	#wrapper
+	
+		#userInfo
+			h2 User Info
+			p
+				strong Name:
+                |  <span id='lecturerName'></span> 
+                br
+                strong Language:
+                |  <span id='programmingLanguage'></span> 
+                br
+                strong Level:
+                |  <span id='level'></span> 
+                br
+                strong Task:
+                |  <span id='task'></span> 
+				
+			h2 User List
+			#userList
+				table
+					thead
+						th UserName
+						th Delete/Update?
+					tbody
+					
+		#addUserPanel
+			h2 Add User
+			#addUser
+				fieldset
+					input#inputLecturerName(type='text', placeholder='lecturerName') 
+                    input#inputProgrammingLanguage(type='text', placeholder='programmingLanguage') 
+                    br
+                    input#inputLevel(type='text', placeholder='Level') 
+                    input#inputTask(type='text', placeholder='Task') 
+					br
+					button#btnAddUser Add User
+					
+		#updateUserPanel
+			h2 Update User
+			#updateUser
+				fieldset
+					input#updateUserLecturerName(type='text', placeholder='lecturerName',)
+                    input#updateUserProgrammingLanguage(type='text', placeholder='programmingLanguage')
+                    br
+                    input#updateUserLevel(type='text', placeholder='Level')
+                    input#updateUserTask(type='text', placeholder='Task')
+					br
+					button#btnUpdateUser Update User
+					button#btnCancelUpdateUser Cancel
+					
