@@ -1,15 +1,15 @@
 extends layout
 
 block content
-	h1= title
-	p Welcome to our test
-	
-	#wrapper
-	
-		#userInfo
-			h2 User Info
-			p
-				strong Name:
+    h1= title
+    p E-mokykla
+    // Wrapper
+    #wrapper
+        // USER INFO
+        #userInfo
+            h2 User Info
+            p
+                strong Name:
                 |  <span id='lecturerName'></span> 
                 br
                 strong Language:
@@ -20,37 +20,42 @@ block content
                 br
                 strong Task:
                 |  <span id='task'></span> 
-				
-			h2 User List
-			#userList
-				table
-					thead
-						th UserName
-						th Delete/Update?
-					tbody
-					
-		#addUserPanel
-			h2 Add User
-			#addUser
-				fieldset
-					input#inputLecturerName(type='text', placeholder='lecturerName') 
+        // /USER INFO
+        // USER LIST
+        h2 User List
+        #userList
+            table
+                thead
+                    th LecturerName
+                    th Delete/Update?
+                tbody
+        // /USER LIST
+        // ADD USER
+        #addUserPanel
+            h2 Add User
+            #addUser
+                fieldset
+                    input#inputLecturerName(type='text', placeholder='lecturerName') 
                     input#inputProgrammingLanguage(type='text', placeholder='programmingLanguage') 
                     br
                     input#inputLevel(type='text', placeholder='Level') 
                     input#inputTask(type='text', placeholder='Task') 
-					br
-					button#btnAddUser Add User
-					
-		#updateUserPanel
-			h2 Update User
-			#updateUser
-				fieldset
-					input#updateUserLecturerName(type='text', placeholder='lecturerName',)
+                    br
+                    button#btnAddUser Add User
+        // /ADD USER
+        // UPDATE USER
+        #updateUserPanel
+            h2 Update User
+            #updateUser
+                fieldset
+                    input#updateUserLecturerName(type='text', placeholder='lecturerName',)
                     input#updateUserProgrammingLanguage(type='text', placeholder='programmingLanguage')
                     br
                     input#updateUserLevel(type='text', placeholder='Level')
                     input#updateUserTask(type='text', placeholder='Task')
-					br
-					button#btnUpdateUser Update User
-					button#btnCancelUpdateUser Cancel
-					
+                    br
+                    button#btnUpdateUser Update User
+                    button#btnCancelUpdateUser Cancel
+        // /UPDATE USER
+
+    // /WRAPPER
