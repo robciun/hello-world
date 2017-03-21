@@ -2,60 +2,79 @@ extends layout
 
 block content
     h1= title
-    p E-mokykla
     // Wrapper
     #wrapper
         // USER INFO
         #userInfo
-            h2 User Info
+            h2 Pamoka
             p
-                strong Name:
+                strong Dėstytojo vardas:
                 |  <span id='lecturerName'></span> 
                 br
-                strong Language:
+                strong Programavimo kalba:
                 |  <span id='programmingLanguage'></span> 
                 br
-                strong Level:
+                strong Lygis:
                 |  <span id='level'></span> 
                 br
-                strong Task:
+                strong Užduotis:
                 |  <span id='task'></span> 
+                br
+                strong Atsakymas:
+                |  <span id='answer'></span>
         // /USER INFO
         // USER LIST
-        h2 User List
+        h2 Dėstytojai
         #userList
             table
                 thead
-                    th LecturerName
-                    th Delete/Update?
+                    th Dėstytojo vardas
+                    th Ištrinti/Atnaujinti
+                    th Atsakyti
                 tbody
         // /USER LIST
         // ADD USER
         #addUserPanel
-            h2 Add User
+            h2 Pridėti pamoką
             #addUser
                 fieldset
-                    input#inputLecturerName(type='text', placeholder='lecturerName') 
-                    input#inputProgrammingLanguage(type='text', placeholder='programmingLanguage') 
+                    input#inputLecturerName(type='text', placeholder='DėstytojoVardas') 
                     br
-                    input#inputLevel(type='text', placeholder='Level') 
-                    input#inputTask(type='text', placeholder='Task') 
+                    input#inputProgrammingLanguage(type='text', placeholder='ProgramavimoKalba') 
                     br
-                    button#btnAddUser Add User
+                    input#inputLevel(type='text', placeholder='Lygis') 
+                    br
+                    input#inputTask(type='text', placeholder='Užduotis') 
+                    br
+                    input#inputAnswer(type='text', placeholder='Atsakymas')
+                    br
+                    button#btnAddUser Pridėti
         // /ADD USER
         // UPDATE USER
         #updateUserPanel
-            h2 Update User
+            h2 Pamokos redagavimas
             #updateUser
                 fieldset
-                    input#updateUserLecturerName(type='text', placeholder='lecturerName',)
-                    input#updateUserProgrammingLanguage(type='text', placeholder='programmingLanguage')
+                    input#updateUserLecturerName(type='text', placeholder='LecturerName',)
+                    br
+                    input#updateUserProgrammingLanguage(type='text', placeholder='ProgrammingLanguage')
                     br
                     input#updateUserLevel(type='text', placeholder='Level')
+                    br
                     input#updateUserTask(type='text', placeholder='Task')
                     br
-                    button#btnUpdateUser Update User
-                    button#btnCancelUpdateUser Cancel
+                    input#updateUserAnswer(type='text', placeholder='Answer')
+                    br
+                    button#btnUpdateUser Atnaujinti
+                    button#btnCancelUpdateUser Atšaukti
         // /UPDATE USER
-
+        // CHECK USER
+        #userAnswerPanel
+            h2 Atsakymas
+            #checkUser
+                fieldset
+                    input#checkUserAnswer(type='text', placeholder='Answer')
+                    br
+                    button#btnCheckAnswer Tikrinti
+        // /CHECK USER
     // /WRAPPER

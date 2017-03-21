@@ -11,11 +11,6 @@ router.get('/userlist', function(req, res) {
 		res.json(items);
 	});
 });
-	/*var collection = db.get('userlist');
-	collection.find({},{},function(e,docs) {
-		res.json(docs);
-	});
-});*/
 
 router.post('/adduser', function(req, res) {
 	var db = req.db;
@@ -24,13 +19,6 @@ router.post('/adduser', function(req, res) {
 		(err === null) ? { msg: '' } : { msg: err });
 	});
 });
-	/*var collection = db.get('userlist');
-	collection.insert(req.body, function(err, result) {
-		res.send(
-		(err === null) ? { msg: '' } : { msg: err}
-		);
-	});
-});*/
 
 router.put('/updateuser/:id', function(req, res) {
 	var db = req.db
@@ -43,15 +31,10 @@ router.put('/updateuser/:id', function(req, res) {
 
 router.delete('/deleteuser/:id', function(req, res) {
 	var db = req.db;
-	//var collection = db.get('userlist');
 	var userToDelete = req.params.id;
 	db.collection('userlist').removeById(userToDelete, function(err, result) {
 		res.send((result === 1) ? { msg: '' } : { msg:'error: ' + err});
 	});
 });
-	/*collection.remove({ '_id' : userToDelete }, function(err) {
-		res.send((err === null) ? { msg: ''} : { msg:'error: ' + err});
-	});
-});*/
 
 module.exports = router;

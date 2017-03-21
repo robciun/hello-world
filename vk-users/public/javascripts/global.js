@@ -14,6 +14,10 @@ $(document).ready(function() {
   $('#updateUser input').on('change', function(){$(this).addClass('updated')})
 
   $('#btnUpdateUser').on('click', updateUser);
+  
+  $('#userList table tbody').on('click', 'td a.linkcheckanswer', checkUserInfo);
+  
+  $('#btnCheckAnswer').on('click', checkUser);
 
   populateTable();
 });
@@ -28,7 +32,8 @@ function populateTable() {
     $.each(data, function(){
       tableContent += '<tr>';
 	  tableContent += '<td><a href="#" class="linkshowuser" rel="' + this.lecturerName + '" title="Show Details">' + this.lecturerName + '</a></td>';
-	  tableContent += '<td><a href="#" class="linkdeleteuser" rel="' + this._id + '">delete</a>/<a href="#" class="linkupdateuser" rel="' + this._id + '">update</a></td>';
+	  tableContent += '<td><a href="#" class="linkdeleteuser" rel="' + this._id + '">ištrinti</a>/<a href="#" class="linkupdateuser" rel="' + this._id + '">atnaujinti</a></td>';
+      tableContent += '<td><a href="#" class="linkcheckanswer" rel="' + this._id + '">atsakyti</a></td>';
 	  tableContent += '</tr>';
     });
 
@@ -50,6 +55,7 @@ function showUserInfo(event) {
   $('#programmingLanguage').text(thisUserObject.programmingLanguage);
   $('#level').text(thisUserObject.level);
   $('#task').text(thisUserObject.task);
+  $('#answer').text(thisUserObject.answer);
 
 };
 
@@ -67,7 +73,8 @@ function addUser(event) {
       'lecturerName': $('#addUser fieldset input#inputLecturerName').val(),
       'programmingLanguage': $('#addUser fieldset input#inputProgrammingLanguage').val(),
       'level': $('#addUser fieldset input#inputLevel').val(),
-      'task': $('#addUser fieldset input#inputTask').val()
+      'task': $('#addUser fieldset input#inputTask').val(),
+	  'answer': $('#addUser fieldset input#inputAnswer').val()
     }
 
     $.ajax({
@@ -106,14 +113,42 @@ function changeUserInfo(event) {
   var _id = $(this).attr('rel');
   var arrayPosition = userListData.map(function(arrayItem) { return arrayItem._id; }).indexOf(_id);
        
- var thisUserObject = userListData[arrayPosition];
+  var thisUserObject = userListData[arrayPosition];
 	
 	$('#updateUserLecturerName').val(thisUserObject.lecturerName);
 	$('#updateUserProgrammingLanguage').val(thisUserObject.programmingLanguage);
 	$('#updateUserLevel').val(thisUserObject.level);
 	$('#updateUserTask').val(thisUserObject.task);
+	$('#updateUserAnswer').val(thisUserObject.answer);
 	
 	$('#updateUser').attr('rel',thisUserObject._id);
+};
+
+function checkUserInfo(event){
+	event.preventDefault();
+	
+	var _id = $(this).attr('rel');
+    var arrayPosition = userListData.map(function(arrayItem) { return arrayItem._id; }).indexOf(_id);
+       
+    var thisUserObject = userListData[arrayPosition];
+ 
+	$('#checkUserAnswer').val(thisUserObject.answer);
+	
+	$('#checkUser').attr('rel', thisUserObject._id);
+};
+	
+function checkUser(event){
+	event.preventDefault();
+	
+	var confirmation = confirm('Ar tai jūsų galutinis atsakymas?');	
+	//var correctAnswer = db.collection.find({answer});
+	
+	if (confirmation === true) {
+		alert('Jūsų atsakymas teisingas');
+	}
+	else {
+		return false;
+	}
 };
 
 function updateUser(event){
@@ -179,8 +214,7 @@ function deleteUser(event) {
 	}
 	else {
 		
-		return false;
-		
+		return false;		
 	}
 	
 };
