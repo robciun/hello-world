@@ -1,0 +1,70 @@
+extends layout
+
+block content
+    h1= title
+    // Wrapper
+    #wrapper
+        // USER INFO
+        #userInfo
+            h2 Pamoka
+            p
+                strong Dėstytojo vardas:
+                |  <span id='lecturerName'></span> 
+                br
+                strong Programavimo kalba:
+                |  <span id='programmingLanguage'></span> 
+                br
+                strong Lygis:
+                |  <span id='level'></span> 
+                br
+                strong Užduotis:
+                |  <span id='task'></span> 
+                br
+                strong Atsakymas:
+                |  <span id='answer'></span>
+        // /USER INFO
+        // USER LIST
+        h2 Dėstytojai
+        #userList
+            table
+                thead
+                    th Dėstytojo vardas
+                    th Ištrinti/Atnaujinti
+                tbody
+        // /USER LIST
+        // ADD USER
+        #addUserPanel
+            h2 Pridėti pamoką
+            #addUser
+                fieldset
+                    input#inputLecturerName(type='text', placeholder='DėstytojoVardas') 
+                    br
+                    input#inputProgrammingLanguage(type='text', placeholder='ProgramavimoKalba') 
+                    br
+                    input#inputLevel(type='text', placeholder='Lygis') 
+                    br
+                    input#inputTask(type='text', placeholder='Užduotis') 
+                    br
+                    input#inputAnswer(type='text', placeholder='Atsakymas')
+                    br
+                    button#btnAddUser Pridėti
+        // /ADD USER
+        // UPDATE USER
+        #updateUserPanel
+            h2 Pamokos redagavimas
+            #updateUser
+                fieldset
+                    input#updateUserLecturerName(type='text', placeholder='LecturerName',)
+                    br
+                    input#updateUserProgrammingLanguage(type='text', placeholder='ProgrammingLanguage')
+                    br
+                    input#updateUserLevel(type='text', placeholder='Level')
+                    br
+                    input#updateUserTask(type='text', placeholder='Task')
+                    br
+                    input#updateUserAnswer(type='text', placeholder='Answer')
+                    br
+                    button#btnUpdateUser Atnaujinti
+                    button#btnCancelUpdateUser Atšaukti
+        // /UPDATE USER
+    // /WRAPPER
