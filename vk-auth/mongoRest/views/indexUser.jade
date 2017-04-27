@@ -1,0 +1,43 @@
+extends layout
+
+block content
+    h1= title
+    // Wrapper
+    #wrapper
+        // USER INFO
+        #userInfo
+            h2 Pamoka
+            p
+                strong Dėstytojo vardas:
+                |  <span id='lecturerName'></span> 
+                br
+                strong Programavimo kalba:
+                |  <span id='programmingLanguage'></span> 
+                br
+                strong Lygis:
+                |  <span id='level'></span> 
+                br
+                strong Užduotis:
+                |  <span id='task'></span> 
+                br
+                strong Atsakymas:
+                |  <span id='answer'></span>
+        // /USER INFO
+        // USER LIST
+        h2 Dėstytojai
+        #userList
+            table
+                thead
+                    th Dėstytojo vardas										   
+                    th Atsakyti
+                tbody
+        // CHECK USER
+        #userAnswerPanel
+            h2 Atsakymas
+            #checkUser
+                fieldset
+                    input#checkUserAnswer(type='text', placeholder='Answer')
+                    br
+                    button#btnCheckAnswer Tikrinti
+        // /CHECK USER
+    // /WRAPPER

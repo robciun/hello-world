@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="authentication"
+    targetNamespace="http://localhost:8000/authentication"
+    xmlns="http://localhost:8000/authentication"
+    xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<wsdl:message name="authenticationRequest">
+        <wsdl:part name="email" type="xs:string"/>
+        <wsdl:part name="password" type="xs:string"/>
+    </wsdl:message>
+
+	<wsdl:message name="authenticationResponse">
+        <wsdl:part name="validUser" type="xs:boolean"/>
+        <wsdl:part name="token" type="xs:string"/>
+        <!--<wsdl:part name="isLogin" type="xs:boolean"/>
+        <wsdl:part name="isAdmin" type="xs:boolean"/>-->
+    </wsdl:message>
+
+    <wsdl:message name="checkTokenRequest">
+      <wsdl:part name="token" type="xs:string"/>
+    </wsdl:message>
+
+    <wsdl:message name="checkTokenResponse">
+      <wsdl:part name="validToken" type="xs:boolean"/>
+    </wsdl:message>
+
+	<wsdl:portType name="authenticationBank">
+        <wsdl:operation name="checkAuthentication">
+        <!--<wsdl:operation name="save">-->
+        <wsdl:input message="authenticationRequest"/>
+        <wsdl:output message="authenticationResponse"/>
+        </wsdl:operation>
+
+      <wsdl:operation name="checkAuthentication">
+      <wsdl:input message="authenticationRequest"/>
+      <wsdl:output message="authenticationResponse"/>
+      </wsdl:operation>
+    </wsdl:portType>
+
+	<wsdl:binding name="authenticationBankSoapBinding" type="authenticationBank">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <!--<wsdl:operation name="save">-->
+        <wsdl:operation name="checkAuthentication">
+            <soap:operation soapAction="checkAuthentication"/>
+            <wsdl:input>
+                <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+    <wsdl:operation name="checkTokenCreation">
+        <soap:operation soapAction="checkTokenCreation"/>
+        <wsdl:input>
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="literal"/>
+        </wsdl:input>
+        <wsdl:output>
+            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="literal"/>
+        </wsdl:output>
+    </wsdl:operation>
+
+    </wsdl:binding>
+
+    <wsdl:service name="AuthenticationService">
+        <wsdl:port binding="authenticationBankSoapBinding" name="authenticationPort">
+            <soap:address location="http://localhost:8001/vk-auth"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
