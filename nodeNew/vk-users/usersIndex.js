@@ -34,7 +34,19 @@ app.get('/users', function(req, res) {
   User.find({}, function(err, result) {
     if(err) {
       return console.log(err);
-    }
+    } else {
     res.send(result);
+  }
   });
 })
+
+app.get('/user/:id', function(req, res){
+  User.findById(req.params.id, function(err, result){
+    if (err) {
+      return console.log('error');
+    } else {
+    res.send(result);
+  }
+});
+});
+app.listen(8002);

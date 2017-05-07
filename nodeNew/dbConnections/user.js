@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
-var dbUsers = mongoose.Schema({
+//var dbUsers = mongoose.Schema({
+var dbUsers = new Schema({
 
   email:{
     type: String,
@@ -19,7 +20,7 @@ var dbUsers = mongoose.Schema({
     required: true
   }
 });
-var user = module.exports = mongoose.model('users', dbUsers);
+//var user = module.exports = mongoose.model('users', dbUsers);
 
 userHash.pre('save', function(next) {
   var user = this;
@@ -68,3 +69,13 @@ module.exports.getRole = function(userID, email, callback) {
     console.log(match);
   });
 }
+
+userHash.methods.checkPasswordMatch = function(pw, hs){
+  bcrypt.compare(pw, this.password, function(err, matchTrue){
+    if(err){
+      return hs(err);
+    }
+    hs(null, matchTrue);
+  });
+};
+module.exports = mongoose.model('User', dbUsers);
