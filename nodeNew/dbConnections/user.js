@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 //var dbUsers = mongoose.Schema({
 var dbUsers = new Schema({
 
@@ -22,9 +22,11 @@ var dbUsers = new Schema({
 });
 //var user = module.exports = mongoose.model('users', dbUsers);
 
-userHash.pre('save', function(next) {
+dbUsers.pre('save', function save(next) {
   var user = this;
-  if(this.isModified('password') || this.isNew) {
+  if(!user.isModified('password') {
+    return next();
+  }
     bcrypt.genSalt(10, function(err, salt) {
       if (err) {
         return next(err);
@@ -37,12 +39,12 @@ userHash.pre('save', function(next) {
         next();
       });
     });
-  } else {
+  /*} else {
     return next();
-  }
+  }*/
 });
 
-module.exports.checkUserMatch = function(email, password, callback) {
+/*module.exports.checkUserMatch = function(email, password, callback) {
   user.findOne({email:email, password:password},
   function(err, match) {
     if (err) {
@@ -68,14 +70,17 @@ module.exports.getRole = function(userID, email, callback) {
   function(err, match) {
     console.log(match);
   });
-}
+}*/
 
-userHash.methods.checkPasswordMatch = function(pw, hs){
+dbUsers.methods.checkPasswordMatch = function(pw, hs){
   bcrypt.compare(pw, this.password, function(err, matchTrue){
-    if(err){
+    /*if(err){
       return hs(err);
-    }
-    hs(null, matchTrue);
+    }*/
+    hs(err, matchTrue);
   });
 };
+
+
+
 module.exports = mongoose.model('User', dbUsers);

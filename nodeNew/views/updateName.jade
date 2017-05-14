@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  form(method='POST')
+    legend Change name
+    .form-group
+      label(for='old name') Old name
+      input.form-control(type='text', name='oldName')
+    .form-group
+      label(for='new name') New name
+      input.form-control(type='text', name='newName')
+    button.btn.btn-primary(type='submit') Change

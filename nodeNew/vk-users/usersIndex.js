@@ -48,5 +48,47 @@ app.get('/user/:id', function(req, res){
     res.send(result);
   }
 });
+})
+
+app.put('/user/:id/updateName', function(req, res) {
+  User.findById(req.params.id, function(err, user) {
+    user.name = req.body.name;
+    user.save(function(saveName) {
+      res.json({success: true, msg: 'Name changed'});
+    });
+  });
 });
+
+app.put('/user/:id/updatePw', function(req, res) {
+  User.findById(req.params.id, function(err, user) {
+    var oldPw = req.body.oldPw;
+    var newPw = req.body.newPw;
+    var confirmPw = req.body.confirmPw;
+    user.checkPasswordMatch(oldPw, function(err, matchTrue) {
+      if (newPw == confirmPw) {
+        user.password = newPw;
+        user.save(function(savePw) {
+          res.json({success: true, msg: 'Password changed'});
+        });
+      }
+    });
+  });
+});
+
+app.post('/updatePw', function (req, res, next) {
+  if (newPw !== newPwConfirm) {
+    throw new Error('passwords dont match');
+  }
+
+  var user = req.user;
+  user.pw = newPw;
+
+  user.save(function(err){
+    if (err) { next(err) }
+    else {
+      res.redirect('/login');
+    }
+  })
+});
+
 app.listen(8002);

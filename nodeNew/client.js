@@ -37,7 +37,8 @@ app.use(logger('dev'));
 app.use(cookieParser());
 
 app.use(bodyparser.urlencoded({"extended":true}));
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('views'));
 
 app.use("/login",express.static("html",{index:"login.html"}));
 //app.use("/admin",express.static("mongoRestAdminUser/views",{index:"index.jade"}));
@@ -46,7 +47,7 @@ app.use(exSession({
 	"secret":"DQW5435FWEFWERHER345HER15EGERVEH",
 	"resave":false,
 "saveUninitialized":true}));
-app.get("/", function(request, response){
+/*app.get("/", function(request, response){
 	if (request.session["sessionAdmin"])
 	{
 		response.redirect("/admin");
@@ -60,9 +61,98 @@ app.get("/", function(request, response){
 	{
 		response.redirect("/login");
 	}
+});*/
+
+app.get('/', function(req, res) {
+	res.render('index', {
+		title: 'E-school',
+		user: req.user
+	});
 });
 
-app.get("/admin", function(request, response) {
+app.get('/login', function(req, res) {
+	res.render('login', {
+		user: req.user
+	});
+});
+
+app.get('/registration', function(req, res) {
+	res.render('signup', {
+		user: req.user
+	});
+});
+
+app.post('/registration', function(req, res) {
+	var user = new User({
+		user: req.body.user,
+		email: req.body.email,
+		password: req.body.password,
+		role: req.body.role
+	});
+
+	user.save(function(err) {
+		req.logIn(user, function(err) {
+			console.log('Registration successful');
+			res.redirect('/');
+		});
+	});
+});
+
+app.get('/logout', function(req, res) {
+	req.logout();
+	res.redirect('/');
+});
+
+app.get('/userProfile', function(req, res) {
+	request(userProfileURL + req.session.uid, function(err, res, body) {
+		var parseJson = JSON.parse(body);
+		res.render('userProfile.jade', {user: parseJson});
+	});
+});
+
+app.get('/userProfile/changeName', function(req, res) {
+	request(userProfileURL + req.session.uid, function(err, res,body) {
+		var parseJson = JSON.parse(body);
+		res.render('updateName.jade', {user: parseJson});
+	});
+});
+
+app.post('/userProfile/changeName', function(req, res) {
+	var changing = {
+		method: 'PUT',
+		url: userProfileURL + req.session.uid + '/updateName',
+		form: {
+				name: req.body.name
+		}
+	};
+	request(changing, function(err, res, body) {
+		res.redirect('/userProfile');
+	});
+});
+
+app.get('/userProfile/changePw', function(req, res) {
+	request(userProfileURL + req.session.uid, function(err, res,body) {
+		var parseJson = JSON.parse(body);
+		res.render('updatePw.jade', {user: parseJson});
+	});
+});
+
+app.post('/userProfile/changePw', function(req, res) {
+	var changing = {
+		method: 'PUT',
+		url: userProfileURL + req.session.uid + '/updatePw',
+		form: {
+				oldPw: req.body.thisPw,
+				newPw: req.body.newPw,
+				confirmPw: req.body.confirmPw
+		}
+	};
+	request(changing, function(err, res, body) {
+		res.redirect('/userProfile');
+	});
+});
+
+/*app.get("/admin", function(request, response) {
 	response.send(jade.renderFile("views/index.jade"))
 });
 
@@ -137,7 +227,7 @@ app.post("/login", function(request, response){
 				response.send("Nepavyko prisijungti");
 			}
     });
-});
+});*/
 
 });
 app.listen(3000, function () {
