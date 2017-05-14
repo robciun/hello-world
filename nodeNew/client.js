@@ -71,10 +71,45 @@ app.get('/', function(req, res) {
 });
 
 app.get('/login', function(req, res) {
+	if (req.session.logged) {
+		res.redirect('/');
+	} else {
+		soap.createClient(url, function(err, client) {
+			if (err) {
+				throw error;
+			}
+		var data = {
+			email : req.body.email,
+			password : req.body.password,
+		}
+		client.describe().service.authenticationPort;
+		client.checkAuthentication(data, function(err, getLogin) {
+			if (err) {
+			throw err;
+		}
+		if(getLogin.validUser == 'true' || getLogin.validUser == true) {
+			req.session.regenerate(function(err) {
+				if (err) {
+					throw error;
+				}
+			})
+
+				req.session.logged = true;
+				req.session.email = getLogin.user;
+				req.session.role = getLogin.role;
+				req.session.uid = getLogin.id;
+				res.redirect('/lectures');
+			}
+		});
+	});
+	}
+});
+
+	/*}
 	res.render('login', {
 		user: req.user
 	});
-});
+});*/
 
 app.get('/registration', function(req, res) {
 	res.render('signup', {
@@ -99,8 +134,15 @@ app.post('/registration', function(req, res) {
 });
 
 app.get('/logout', function(req, res) {
-	req.logout();
-	res.redirect('/');
+	req.session.destroy(function(err) {
+		if(err) {
+			throw error;
+		} else {
+			res.redirect('/login');
+		}
+	});
+	/*req.logout();
+	res.redirect('/');*/
 });
 
 app.get('/userProfile', function(req, res) {

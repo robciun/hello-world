@@ -9,7 +9,7 @@ var mongo = require('mongoskin');
 var db = mongo.db("mongodb://localhost:27017/mongoRest", {native_parser:true});
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var lectures = require('./routes/lectures');
 
 var app = express();
 
@@ -29,7 +29,7 @@ app.use(function(req,res,next){
 });
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/lectures', lectures);
 
 app.use(function(req, res, next) {
 	var err = new Error('Not Found');
