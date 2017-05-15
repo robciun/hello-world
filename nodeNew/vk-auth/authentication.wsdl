@@ -14,18 +14,20 @@
 
 	<wsdl:message name="authenticationResponse">
         <wsdl:part name="validUser" type="xs:boolean"/>
-        <wsdl:part name="token" type="xs:string"/>
+        <wsdl:part name="user" type="xs:string"/>
+        <wsdl:part name="role" type="xs:string"/>
+        <wsdl:part name="id" type="xs:string"/>
         <!--<wsdl:part name="isLogin" type="xs:boolean"/>
         <wsdl:part name="isAdmin" type="xs:boolean"/>-->
     </wsdl:message>
 
-    <wsdl:message name="checkTokenRequest">
+    <!--<wsdl:message name="checkTokenRequest">
       <wsdl:part name="token" type="xs:string"/>
-    </wsdl:message>
+    </wsdl:message>-->
 
-    <wsdl:message name="checkTokenResponse">
+    <!--<wsdl:message name="checkTokenResponse">
       <wsdl:part name="validToken" type="xs:boolean"/>
-    </wsdl:message>
+    </wsdl:message>-->
 
 	<wsdl:portType name="authenticationBank">
         <wsdl:operation name="checkAuthentication">
@@ -54,7 +56,7 @@
             </wsdl:output>
         </wsdl:operation>
 
-    <wsdl:operation name="checkTokenCreation">
+    <!--<wsdl:operation name="checkTokenCreation">
         <soap:operation soapAction="checkTokenCreation"/>
         <wsdl:input>
             <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="literal"/>
@@ -62,7 +64,7 @@
         <wsdl:output>
             <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="literal"/>
         </wsdl:output>
-    </wsdl:operation>
+    </wsdl:operation>-->
 
     </wsdl:binding>
 
