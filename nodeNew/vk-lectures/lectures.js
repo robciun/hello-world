@@ -10,12 +10,18 @@ app.get('/', function(req, res) {
 });
 
 app.get('/lectureList', function(req, res) {
-	lecture.find({}, function(err, result) {
+	lecture.find({}, function(result) {
 		res.send(result);
 	});
 });
 
-app.post('/addLecture', function(req, res) {
+app.get('/lectureSpecific/:id', function(req, res) {
+	lecture.findById(req.params.id, function(result) {
+		res.send(result);
+	});
+})
+
+app.post('/lectureSpecific', function(req, res) {
 
 	var lect = {
 		programmingLanguage: req.body.programmingLanguage,
@@ -53,7 +59,7 @@ app.post('/addLecture', function(req, res) {
 	});
 });
 
-app.post('/addTask/:id', function(req, res) {
+app.post('/lectureSpecific/:id/addTask', function(req, res) {
 	Lecture.findById(req.params.id, function(err, newLecture) {
 		newLecture.tasks.push({
 			task: req.body.task,
@@ -64,7 +70,7 @@ app.post('/addTask/:id', function(req, res) {
 	})
 });
 
-app.put('/updateLecture/:id', function(req, res) {
+app.put('lectureSpecific/updateLecture/:id', function(req, res) {
 	Lecture.findById(req.params.id, {new: true}, function(err, newLecture) {
 		for (var field in Lecture.schema.paths) {
 			if((field !== '_id') && (field !== '_v')) {
@@ -86,7 +92,7 @@ app.put('/updateLecture/:id', function(req, res) {
 	});
 });*/
 
-app.delete('/deleteLecture/:id', function(req, res) {
+app.delete('/lectureSpecific/:id', function(req, res) {
 	Lecture.findByIdAndRemove(req.params.id, function(err) {
 		res.send('Successful delete');
 	/*var db = req.db;

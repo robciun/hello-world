@@ -63,12 +63,25 @@ app.use(exSession({
 	}
 });*/
 
+var userProfileURL = 'http://localhost:8002/user/';
+var registrationURL = 'http://localhost:8002/registration/';
+var lectureListURL = 'http://localhost:3002/lectureList/';
+var userLectureURL = 'http://localhost:3002/lectureSpecific/user/';
+var lectureSpecificURL = 'http://localhost:3002/lectureSpecific/';
+
 app.get('/', function(req, res) {
 	res.render('index', {
 		title: 'E-school',
 		user: req.user
 	});
 });
+
+function lecturerTrue(req, res, next) {
+	if(req.session.role == 'lecturer') {
+		return next();
+	}
+	res.redirect('/')
+}
 
 app.get('/login', function(req, res) {
 	if (req.session.logged) {
@@ -112,16 +125,31 @@ app.get('/login', function(req, res) {
 });*/
 
 app.get('/registration', function(req, res) {
-	res.render('signup', {
+	res.sendFile(__dirname + '/views/registration.jade');
+	/*res.render('signup', {
 		user: req.user
-	});
+	});*/
 });
 
 app.post('/registration', function(req, res) {
-	var user = new User({
+	var usr = {
+		url: registrationURL,
+		form: {
+			name: req.body.name,
+			email: req.body.email,
+			password: req.body.password,
+			password2: req.body.password2,
+			role: req.body.userRole
+		}
+	};
+	request.post(usr, function(res, body) {
+		res.redirect('/login');
+	})
+	/*var user = new User({
 		user: req.body.user,
 		email: req.body.email,
 		password: req.body.password,
+		password2: req.body.password2,
 		role: req.body.role
 	});
 
@@ -129,7 +157,7 @@ app.post('/registration', function(req, res) {
 		req.logIn(user, function(err) {
 			console.log('Registration successful');
 			res.redirect('/');
-		});
+		});*/
 	});
 });
 
@@ -193,6 +221,61 @@ app.post('/userProfile/changePw', function(req, res) {
 		res.redirect('/userProfile');
 	});
 });
+
+app.get('/lectureList', function(req, res) {
+	request(lectureListURL, function(res, body) {
+		var parseJson = JSON.parse(body);
+		res.render('global.js', {lectureList: parseJson, role: req.sessions.role});
+	});
+});
+
+app.get('/userLecture', lecturerTrue, function(req, res) {
+	request(userLectureURL + req.session.uid, function(res, body) {
+		var parseJson = JSON.parse(body);
+		res.render('global.js', {lectureList: parseJson});
+	});
+});
+
+app.get('/lectureAdd', lecturerTrue, function(req, res) {
+	res.sendFile(__dirname + '/views/global.js');
+});
+
+app.post('/lectureAdd', lecturerTrue, function(req, res) {
+		var lect = {
+			programmingLanguage: req.body.programmingLanguage,
+			lecturerName: req.body.lecturerName,
+			level: req.body.level,
+			lectures: req.body.lectures
+		}
+	});
+	request.post(lect, function(res, body) {
+		res.redirect('userLecture');
+	});
+
+app.get('lectureSpecific/:id', function(req, res) {
+	request(lectureSpecificURL + req.params.id, function(res, body) {
+		var parseJson = JSON.parse(body);
+		request(userProfileURL + parseJson.lecturerName, function(lecturerRes, lecturerBody) {
+			var lecturerParseJSon = JSON.parse(lecturerBody);
+			res.render('global.js', {lectureSpecific: parseJson, lecturerName: lecturerParseJSon.name, role: req.session.role});
+		})
+	});
+});
+
+app.get('/lectureSpecific/:id/delete', lecturerTrue, function(req, res) {
+	request(lectureSpecificURL + req.params.id, function(res, body) {
+		var parseJson = JSON.parse(body);
+		if (parseJson.lecturerName == req.session.uid) {
+			request.delete(lectureSpecificURL + req.params.id, function(res, body) {
+				res.redirect('/userLecture');
+			});
+		} else {
+			res.redirect('/lectureList');
+		}
+	});
+});
+
+
 
 /*app.get("/admin", function(request, response) {
 	response.send(jade.renderFile("views/index.jade"))

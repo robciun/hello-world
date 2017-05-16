@@ -3,6 +3,10 @@ extends layout
 block content
   form(method='POST')
     legend Signup
+    input(type="radio", name="userRole", value="student")
+    | Student
+    input(type="radio", name="userRole", value="lecturer")
+    | Lecturer
     .form-group
       label(for='username') Username
       input.form-control(type='text', name='username')

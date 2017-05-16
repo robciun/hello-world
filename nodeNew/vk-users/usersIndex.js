@@ -19,6 +19,7 @@ app.post('/registration', function(req, res) {
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
+      password2: req.body.password2,
       role: req.body.role
     });
     newUser.save(function(err){
