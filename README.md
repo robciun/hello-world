@@ -1,2 +1,4 @@
 # Robertas_Ciūnys
-Autorizacija yra patalpinta vk-auth aplanke
+Autorizacija (pradinė) yra patalpinta vk-auth aplanke
+Aplikacija patalpinta vk-eschool aplanke
+Dizaino aplanke patalpintas aplikacijos dizainas, kuris buvo kurtas pries funkcionalumą
