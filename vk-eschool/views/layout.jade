@@ -1,0 +1,39 @@
+doctype html
+html
+    head
+        title = title
+
+        link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+        link(rel='stylesheet', href='/stylesheets/style.css')
+    body
+      .navbar.navbar-inverse.navbar-static-top(role='navigation')
+        .container
+          .navbar-header
+            button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+              span.sr-only Toggle navigation
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
+            a.navbar-brand(href='/') Project name
+          .collapse.navbar-collapse
+            ul.nav.navbar-nav
+              li.active
+                a(href='/') home
+              if user
+                li
+                  a(href='/user') profile
+                li
+                  a(href='/lectureList') lectures
+                li
+                  a(href='/lectureSpecific/user') my lectures
+                li
+                  a(href='/logout') logout
+              else
+                li
+                  a(href='/login') login
+                li
+                  a(href='/registration') signup
+      .container
+        block content
+        script(src='http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js')
+        script(src='/javascripts/global.js')
