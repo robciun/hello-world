@@ -9,15 +9,15 @@ var bodyparser = require('body-parser');
 var jade = require('jade');
 var app = express();
 
-var favicon = require('serve-favicon');
-var logger = require('morgan');
+//var favicon = require('serve-favicon');
+//var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var users = require('./vk-lectures/lectures');
 
-var mongo = require('mongoskin');
-var db = mongo.db("mongodb://localhost:27017/vk-auth", {native_parser:true});
+//var mongo = require('mongoskin');
+//var db = mongo.db("mongodb://localhost:27017/vk-auth", {native_parser:true});
 
 
 app.set('views', path.join(__dirname, 'views'));
@@ -29,7 +29,7 @@ app.use(function(req,res,next){
 	next();
 });
 
-app.use('/', routes);
+app.use('/', vk-lectures);
 app.use('/users', users);
 
 app.use(logger('dev'));
@@ -40,7 +40,8 @@ app.use(bodyparser.urlencoded({"extended":true}));
 //app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('views'));
 
-app.use("/login",express.static("html",{index:"login.html"}));
+app.use("/login",express.static("views",{index:"login.jade"}));
+//app.use("/login",express.static("html",{index:"login.html"}));
 //app.use("/admin",express.static("mongoRestAdminUser/views",{index:"index.jade"}));
 //app.use("/admin",express.static("html",{index:"paskyrosTipas.html"}));
 app.use(exSession({
@@ -94,7 +95,7 @@ app.get('/login', function(req, res) {
 	} else {
 		soap.createClient(url, function(err, client) {
 			if (err) {
-				throw error;
+				throw err;
 			}
 		var data = {
 			email : req.body.email,
@@ -108,7 +109,7 @@ app.get('/login', function(req, res) {
 		if(getLogin.validUser == 'true' || getLogin.validUser == true) {
 			req.session.regenerate(function(err) {
 				if (err) {
-					throw error;
+					throw err;
 				}
 			})
 
@@ -116,7 +117,7 @@ app.get('/login', function(req, res) {
 				req.session.email = getLogin.user;
 				req.session.role = getLogin.role;
 				req.session.uid = getLogin.id;
-				res.redirect('/lectures');
+				res.redirect('/lectureList');
 			}
 		});
 	});
@@ -169,7 +170,7 @@ app.post('/registration', function(req, res) {
 app.get('/logout', function(req, res) {
 	req.session.destroy(function(err) {
 		if(err) {
-			throw error;
+			throw err;
 		} else {
 			res.redirect('/login');
 		}
@@ -180,15 +181,23 @@ app.get('/logout', function(req, res) {
 
 app.get('/userProfile', function(req, res) {
 	request(userProfileURL + req.session.uid, function(err, res, body) {
+		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
 		res.render('userProfile.jade', {user: parseJson});
+	} else {
+		throw err;
+	}
 	});
 });
 
 app.get('/userProfile/changeName', function(req, res) {
-	request(userProfileURL + req.session.uid, function(err, res,body) {
+	request(userProfileURL + req.session.uid, function(err, res, body) {
+		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
 		res.render('updateName.jade', {user: parseJson});
+	} else {
+		throw err;
+	}
 	});
 });
 
@@ -201,14 +210,22 @@ app.post('/userProfile/changeName', function(req, res) {
 		}
 	};
 	request(changing, function(err, res, body) {
+		if (!err && res.statusCode == 200){
 		res.redirect('/userProfile');
+	} else {
+		throw err;
+	}
 	});
 });
 
 app.get('/userProfile/changePw', function(req, res) {
-	request(userProfileURL + req.session.uid, function(err, res,body) {
+	request(userProfileURL + req.session.uid, function(err, res, body) {
+		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
 		res.render('updatePw.jade', {user: parseJson});
+	} else {
+		throw err;
+	}
 	});
 });
 
@@ -223,21 +240,33 @@ app.post('/userProfile/changePw', function(req, res) {
 		}
 	};
 	request(changing, function(err, res, body) {
+		if (!err && res.statusCode == 200) {
 		res.redirect('/userProfile');
+	} else {
+		throw err;
+	}
 	});
 });
 
 app.get('/lectureList', function(req, res) {
-	request(lectureListURL, function(res, body) {
+	request(lectureListURL, function(err, res, body) {
+		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
 		res.render('global.js', {lectureList: parseJson, role: req.sessions.role});
+	} else {
+		throw err;
+	}
 	});
 });
 
 app.get('/userLecture', lecturerTrue, function(req, res) {
-	request(userLectureURL + req.session.uid, function(res, body) {
+	request(userLectureURL + req.session.uid, function(err, res, body) {
+		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
 		res.render('global.js', {lectureList: parseJson});
+	} else {
+		throw err;
+	}
 	});
 });
 
@@ -247,40 +276,77 @@ app.get('/lectureAdd', lecturerTrue, function(req, res) {
 
 app.post('/lectureAdd', lecturerTrue, function(req, res) {
 		var lect = {
+			url: lectureSpecificURL,
+			form: {
 			programmingLanguage: req.body.programmingLanguage,
 			lecturerName: req.body.lecturerName,
 			level: req.body.level,
 			lectures: req.body.lectures
 		}
+	};
+
+	request.post(lect, function(err, res, body) {
+		if (!error && res.statusCode == 200) {
+		res.redirect('/userLecture');
+	} else {
+		throw err;
+	}
 	});
-	request.post(lect, function(res, body) {
-		res.redirect('userLecture');
-	});
+});
 
 app.get('lectureSpecific/:id', function(req, res) {
-	request(lectureSpecificURL + req.params.id, function(res, body) {
+	request(lectureSpecificURL + req.params.id, function(err, res, body) {
+		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
 		request(userProfileURL + parseJson.lecturerName, function(lecturerRes, lecturerBody) {
+			if (!err && res.statusCode == 200) {
 			var lecturerParseJSon = JSON.parse(lecturerBody);
 			res.render('global.js', {lectureSpecific: parseJson, lecturerName: lecturerParseJSon.name, role: req.session.role});
+		}
 		})
+	} else {
+		throw err;
+	}
 	});
 });
 
 app.get('/lectureSpecific/:id/delete', lecturerTrue, function(req, res) {
-	request(lectureSpecificURL + req.params.id, function(res, body) {
+	request(lectureSpecificURL + req.params.id, function(err, res, body) {
+		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
 		if (parseJson.lecturerName == req.session.uid) {
 			request.delete(lectureSpecificURL + req.params.id, function(res, body) {
+				if (!err && res.statusCode == 200) {
 				res.redirect('/userLecture');
-			});
+			} else {
+				throw err;
+			}
+		});
 		} else {
 			res.redirect('/lectureList');
 		}
+	} else {
+		throw err;
+	}
 	});
 });
 
-
+app.post('/answerTrue', function(req, res) {
+	var answ = {
+		method: 'POST',
+		url: userProfileURL + req.session.uid + '/updateName',
+		form: {
+			name: req.body.name
+		}
+	};
+	request(answ, function(err, res, body) {
+		if (!err && res.statusCode == 200) {
+			res.redirect('/userProfile');
+		} else {
+			throw err;
+		}
+	});
+});
 
 /*app.get("/admin", function(request, response) {
 	response.send(jade.renderFile("views/index.jade"))
@@ -359,7 +425,7 @@ app.post("/login", function(request, response){
     });
 });*/
 
-});
+
 app.listen(3000, function () {
   console.log('VK-auth app listening on port 3000!')
 })
