@@ -164,7 +164,7 @@ app.delete('/lectureSpecific/:id', function(req, res) {
 	});
 });
 
-app.post('/lectureSpecific/:id/lectures/:idLect/task/:idTask/answerTrue', function(req, res) {
+app.post('/lectureSpecific/:id/lecture/:idLect/task/:idTask/answerTrue', function(req, res) {
 	Lecture.findById(req.params.id, function(err, res) {
 		if (err) {
 			throw err;

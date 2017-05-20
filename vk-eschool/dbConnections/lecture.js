@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var dbLectures = new Schema({
   programmingLanguage: String,
   lecturerName: String,
+  lecture: String,
   level: String,
   lectures:[{
     name: String,

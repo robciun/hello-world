@@ -310,6 +310,119 @@ app.get('lectureSpecific/:id', function(req, res) {
 	});
 });
 
+app.get('/lectureSpecific/:id/lecture/:idLect/:i', function(req, res) {
+	request(lectureSpecificURL + req.params.id, function(err, res, body) {
+		if (!err && res.statusCode == 200) {
+			var parseJson = JSON.parse(body),
+			userRights = [],
+			lecture = parseJson.lectures[req.param.i];
+
+			for (var i = 0; i < lecture.tasks.length; i++) {
+				userRights.push(false);
+			};
+
+			for (var i = 0; i < lecture.tasks.length; i++) {
+				for (var j = 0; j < lecture.tasks[i].users.length; j++) {
+					if (lecture.tasks[i].users[j].userID == req.session.uid) {
+						userRights[i] = true;
+					}
+				};
+			};
+			res.render('global.js', {
+				lecture: parseJson.lectures[req.params.i],
+				lectureID: req.params.idLect,
+				lectureSpecificID: req.params.id,
+				lectureIndex: req.params.i,
+				info: 'start',
+				access: userRights});
+			} else {
+				throw err;
+			}
+	});
+});
+
+app.get('/lectureSpecific/:id/lecture/:idLect/:i/task/:idTask/:idTsk', function(req, res) {
+	request(lectureSpecificURL + req.params.id, function(err, res, body) {
+		if (!err && res.statusCode == 200) {
+			var parseJson = JSON.parse(body),
+			Tsk = parseJson.lectures[req.params.i].tasks[req.params.idTsk],
+			userRights = [],
+			lecture = parseJson.lectures[req.param.i];
+
+			for (var i = 0; i < lecture.tasks.length; i++) {
+				userRights.push(false);
+			};
+
+			for (var i = 0; i < lecture.tasks.length; i++) {
+				for (var j = 0; j < lecture.tasks[i].users.length; j++) {
+					if (lecture.tasks[i].users[j].userID == req.session.uid) {
+						userRights[i] = true;
+					}
+				};
+			};
+			res.render('global.js', {lecture: parseJson.lectures[req.params.i],
+				lectureID: req.params.idLect,
+				lectureSpecificID: req.params.id,
+				lectureIndex: req.params.i,
+				info: 'start',
+				task: t,
+				access: userRights});
+			} else {
+				throw err;
+			}
+	});
+});
+
+app.post('/lectureSpecific/:id/lecture/:idLect/task/:idTask/answerTrue', function(req, res) {
+	var answ = {
+		url: 'http://localhost:3002/lectureSpecific/' + req.params.id + '/lecture/' + req.params.idLect + '/task/' + req.params.idTask + '/answerTrue',
+		form: {
+			userID: req.session.uid
+		}
+	};
+	request.post(answ, function(err, res, body) {
+		if (!err && res.statusCode == 200) {
+			var parseJson = JSON.parse(body);
+			res.send(parseJson);
+		} else {
+			throw err;
+		}
+	});
+});
+
+app.get('/lectureSpecific/:id/lecture/:idLect/:i/task/:idTask/:idTsk/slide/:idSlide/:idSlid', function(req,res){
+	request(lectureSpecificURL + req.params.id, function(err, res, body) {
+		if (!err && res.statusCode == 200) {
+			var parseJson = JSON.parse(body),
+			userRights = [],
+			lecture = parseJson.lectures[req.param.i];
+
+			for (var i = 0; i < lecture.tasks.length; i++) {
+				userRights.push(false);
+			};
+
+			for (var i = 0; i < lecture.tasks.length; i++) {
+				for (var j = 0; j < lecture.tasks[i].users.length; j++) {
+					if (lecture.tasks[i].users[j].userID == req.session.uid) {
+						userRights[i] = true;
+					}
+				};
+			};
+			res.render('global.js', {
+				lecture: parseJson.lectures[req.params.i],
+				lectureID: req.params.idLect,
+				lectureSpecificID: req.params.id,
+				lectureIndex: req.params.i,
+				info: 'start',
+				slide: parseJson.lectures[req.params.i].tasks[req.params.idTsk].slides[req.params.idSlid],
+				access: userRights});
+			} else {
+				throw err;
+			}
+	});
+});
+
+
 app.get('/lectureSpecific/:id/delete', lecturerTrue, function(req, res) {
 	request(lectureSpecificURL + req.params.id, function(err, res, body) {
 		if (!err && res.statusCode == 200) {
