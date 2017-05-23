@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="css.css">
+  <title>Registration</title>
+  <meta charset="utf-8">
+</head>
+<body>
+
+
+<div align="center" class="container ">
+
+	<br>
+	<br>
+	<br>
+  <img  align="center" class="img-responsive" src="img/logo.png">
+	<br>
+	<img  align="center" class="img-responsive" src="img/asmensDuomenys3.png">
+  <h3>Asmens duomenys</h3>
+
+  <form class="form-inline">
+
+
+		<fieldset>
+			<label class="radio">
+			  <input type="radio" name="userRole" value="student">Studentas
+			</label>
+      <br>
+				Paskyra, skirta studentams, kurie nori mokytis ir būti įvertinti
+		</fieldset>
+
+		<fieldset>
+			<label class="radio">
+			  <input type="radio" name="userRole" value="lecturer">Dėstytojas
+			</label>
+      <br>
+				Paskyra dėstytojams
+		</fieldset>
+    <br>
+
+
+	<div class="input-group">
+		<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+		<input type="text" class="form-control" name="name" placeholder="Rodomas vardas">
+    </div>
+
+	<br>
+	<br>
+
+    <div class="input-group">
+		<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+		<input type="email" class="form-control" name="email" placeholder="El. paštas">
+    </div>
+
+	<br>
+	<br>
+
+    <div class="input-group">
+		<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+		<input type="password" class="form-control" name="password" placeholder="Slaptažodis">
+    </div>
+
+	<br>
+	<br>
+
+	<div class="input-group">
+		<span class="input-group-addon"><i class="glyphicon glyphicon-repeat"></i></span>
+		<input type="password" class="form-control" name="password2" placeholder="Pakartokie slaptažodį">
+    </div>
+
+	<br>
+	<br>
+
+	<p><button type="submit" class="btn btn-primary">Registruotis</button></p>
+
+	<p><a href="/login"><button class="btn btn-primary">Atgal</button></a></p>
+
+  </form>
+
+<footer>
+  <p align="center" class="blurry-text" ><font align="center" size="2">Visos teisės saugomos</font></p>
+</footer>
+
+<script>
+  $(document).ready(function) {
+    $('#submit').on('click', function() {
+      var form = {
+        name: $('input[name="name"]').val(),
+        email: $('input[name="email"]'),val(),
+        password: $('input[name="password"]').val(),
+        password2: $('input[name="password2"]').val(),
+        userRole: $('input[type="radio"][name="userRole"]:checked').val()
+      };
+      console.log(form);
+
+      if(form.password !== form.password2 || form.userRole == undefined) {
+        alert('Įvesti blogi duomenys');
+      } else {
+        $.ajax({
+          url: '/registration',
+          type: 'POST',
+          data: form,
+        });
+      }
+    });
+  });
+  </script>
+
+</body>
+
+</html>

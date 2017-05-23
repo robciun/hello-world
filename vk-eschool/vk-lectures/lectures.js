@@ -28,31 +28,32 @@ app.post('/lectureSpecific', function(req, res) {
 
 	var lect = {
 		programmingLanguage: req.body.programmingLanguage,
-		lecturerName: req.body.lecturerName,
+		userName: req.body.userName,
 		level: req.body.level,
-		lectures: []
+		description: req.body.description,
+		themes: []
 	};
 
-	for (var i = 0; i < req.body.lectures.length; i++) {
-		lect.lectures.push({
-			name: req.body.lectures[i].name,
+	for (var i = 0; i < req.body.themes.length; i++) {
+		lect.themes.push({
+			name: req.body.themes[i].name,
 			tasks: []
 		});
-		for (var j = 0; j < req.body.lectures[i].tasks.length; j++) {
+		for (var j = 0; j < req.body.themes[i].tasks.length; j++) {
 			var tsk = {
-				task: req.body.lectures[i].tasks[j].task,
-				answer: req.body.lectures[i].tasks[j].answer,
+				task: req.body.themes[i].tasks[j].task,
+				answer: req.body.themes[i].tasks[j].answer,
 				slides: []
 			};
 
-			for (var x = 0; x < req.body.lectures[i].tasks[j].slides.length; x++) {
+			for (var x = 0; x < req.body.themes[i].tasks[j].slides.length; x++) {
 				var slide = {
-					name: req.body.lectures[i].tasks[j].slides[x].name,
-					info: req.body.lectures[i].tasks[j].slides[x].info
+					name: req.body.themes[i].tasks[j].slides[x].name,
+					info: req.body.themes[i].tasks[j].slides[x].info
 				}
 				tsk.slides.push(slide);
 			};
-			lect.lectures[lect.lectures.length-1].tasks.push(tsk);
+			lect.themes[lect.themes.length-1].tasks.push(tsk);
 		};
 	};
 
@@ -143,7 +144,7 @@ app.post('/lectureSpecific/:id/:idTask/slideAdd', function(req, res) {
 });*/
 
 app.get('/lectureSpecific/user/:idUser', function(req, res) {
-	Lecture.find({'lecturerName': req.params.idUser}, function(err, result) {
+	Lecture.find({'userName': req.params.idUser}, function(err, result) {
 		if (err) {
 			throw err;
 		}
@@ -164,12 +165,12 @@ app.delete('/lectureSpecific/:id', function(req, res) {
 	});
 });
 
-app.post('/lectureSpecific/:id/lecture/:idLect/task/:idTask/answerTrue', function(req, res) {
+app.post('/lectureSpecific/:id/theme/:idTheme/task/:idTask/answerTrue', function(req, res) {
 	Lecture.findById(req.params.id, function(err, res) {
 		if (err) {
 			throw err;
 		}
-		result.lectures.id(req.params.idLect).taks.id(req.params.idTask).users.push({userID: req.body.UserID});
+		result.themes.id(req.params.idTheme).taks.id(req.params.idTask).users.push({userID: req.body.userID});
 		result.save();
 
 		res.json({success: true, msg: 'Atsakymas teisingas'});
