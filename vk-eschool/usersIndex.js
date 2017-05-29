@@ -43,54 +43,63 @@ app.get('/users', function(req, res) {
 
 app.get('/user/:id', function(req, res){
   User.findById(req.params.id, function(err, result){
-    if (err) {
-      return console.log('error');
-    } else {
+    if (err) return console.log('error');
+
     res.send(result);
-  }
+
 });
 })
 
 app.put('/user/:id/updateName', function(req, res) {
   User.findById(req.params.id, function(err, user) {
+    if (err) return console.log(err);
+    if(!user) {
+      return console.log("Error");
+    } else {
     user.name = req.body.name;
     user.save(function(saveName) {
+      if (err) {
+        return console.log(saveName);
+      } else {
       res.json({success: true, msg: 'Name changed'});
+    }
     });
+  }
   });
 });
 
 app.put('/user/:id/updatePw', function(req, res) {
   User.findById(req.params.id, function(err, user) {
+    if (err) return console.log(err);
+    if (!user) {
+      return console.log("Error");
+    } else {
     var oldPw = req.body.oldPw;
     var newPw = req.body.newPw;
     var confirmPw = req.body.confirmPw;
     user.checkPasswordMatch(oldPw, function(err, matchTrue) {
+    if(matchTrue && !err) {
       if (newPw == confirmPw) {
         user.password = newPw;
         user.save(function(savePw) {
+          if (err) {
+            return console.log(saveName);
+          } else {
           res.json({success: true, msg: 'Password changed'});
+          console.log("Password changed");
+        }
         });
+      } else {
+        res.json({success: false, msg: 'Passwords dont match'});
       }
+    } else {
+      res.json({success: false, msg: 'Incorrect password'});
+    }
     });
+  }
   });
 });
 
-app.post('/updatePw', function (req, res, next) {
-  if (newPw !== newPwConfirm) {
-    throw new Error('passwords dont match');
-  }
-
-  var user = req.user;
-  user.pw = newPw;
-
-  user.save(function(err){
-    if (err) { next(err) }
-    else {
-      res.redirect('/login');
-    }
-  })
-});
 
 app.listen(8002, function () {
   console.log('VK-auth app listening on port 8002!')

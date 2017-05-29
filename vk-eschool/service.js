@@ -45,4 +45,4 @@ var server = http.createServer(function(request,response) {
 });
 
 server.listen(8001);
-soap.listen(server, '/vk-auth', service, xml);
+soap.listen(server, '/login', service, xml);

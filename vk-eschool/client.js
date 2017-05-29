@@ -53,7 +53,7 @@ function lecturerTrue(req, res, next) {
 	res.redirect('/')
 }
 
-app.get('/login', function(req, res) {
+app.post('/login', function(req, res) {
 	if (req.session.logged) {
 		res.redirect('/');
 	} else {
@@ -65,14 +65,14 @@ app.get('/login', function(req, res) {
 			email : req.body.email,
 			password : req.body.password,
 		}
-		client.describe().service.authenticationPort;
-		client.checkAuthentication(data, function(err, getLogin) {
-			if (err)
-			throw err;
+		client.describe().AuthenticationService.authenticationPort;
+		client.checkAuthentication(data, function(error, getLogin) {
+			if (error)
+			throw error;
 		if(getLogin.validUser == 'true' || getLogin.validUser == true) {
-			req.session.regenerate(function(err) {
-				if (err)
-					throw err;
+			req.session.regenerate(function(error) {
+				if (error)
+					throw error;
 
 			})
 
@@ -91,7 +91,7 @@ app.get('/login', function(req, res) {
 
 
 app.get('/registration', function(req, res) {
-	res.sendFile(__dirname + '/views/register.html');
+	res.sendFile(__dirname + '/views/registration.html');
 });
 
 app.post('/registration', function(req, res) {
