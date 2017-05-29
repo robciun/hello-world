@@ -1,4 +1,6 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
 var dbLectures = new Schema({
   theme: String,
   description: String,
@@ -15,7 +17,7 @@ var dbLectures = new Schema({
           {
             userID: String,
           }
-        ]
+        ],
         slides: [
           {
             name: String,

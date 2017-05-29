@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="css.css">
+  <title>Pamokos pridėjimas</title>
+  <meta charset="utf-8">
+</head>
+<body>
+
+
+<div align="center" class="container ">
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+    <li><font size="6" color="white">@VK</font></li>
+    <li><a href='/userProfile'>Paskyra</a></li>
+    <li><a href='/lectureList'>Pamokos</a></li>
+    <li><a href='/userLecture'>Mano pamokos</a></li>
+	</ul>
+	<ul class="nav navbar-nav navbar-right">
+		<li><a href="/logout"><span class="glyphicon glyphicon-off"></span>Atsijungti</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class=row>
+  <div class=col-sm-3>
+    <ul>
+      <% for(var i=0; i<access.length; i++) {%>
+        <% if(access[i] == true) { %>
+          <li><a href="/lectureSpecific/<%= lectureSpecificID %>/theme/<%= themeID %>/<%= themeIndex %>/task/<%= theme.tasks[i]._id %>/<%= i %>"><%= theme.tasks[i].task %></a>
+            <ul>
+              <% for(var j=0; j<theme.tasks[i].slides.length; j++) { %>
+                <li><a href="/lectureSpecific/<%= lectureSpecificID %>/theme/<%= themeID %>/<%= themeIndex %>/task/<%= theme.tasks[i]._id %>/<%= i %>/slide/<%= theme.tasks[i].slides[j]._id %>/<%= j %"><%= theme.tasks[i].slides[j].name %></a></li>
+                <% } %>
+            </ul>
+          </li>
+          <% } else if (i == 0 && access[i] == false) {%>
+            <li><a href="/lectureSpecific/<%= lectureSpecificID %>/theme/<%= themeID %>/<%= themeIndex %>/task/<%= theme.tasks[i]._id %>/<%= i %>"><%= theme.tasks[i].task %></a>
+              <ul class>
+                <% for(var j=0; j<theme.tasks[i].slides.length; j++) { %>
+                  <li><a href="/lectureSpecific/<%= lectureSpecificID %>/theme/<%= themeID %>/<%= themeIndex %>/task/<%= theme.tasks[i]._id %>/<%= i %>/slide/<%= theme.tasks[i].slides[j]._id %>/<%= j %"><%= theme.tasks[i].slides[j].name %></a></li>
+                  <% } %>
+              </ul>
+            </li>
+            <% } else if(access[i] == false && access[i-1] == true) {%>
+              <li><a href="/lectureSpecific/<%= lectureSpecificID %>/theme/<%= themeID %>/<%= themeIndex %>/task/<%= theme.tasks[i]._id %>/<%= i %>"><%= theme.tasks[i].task %></a>
+                <ul>
+                  <% for(var j=0; j<theme.tasks[i].slides.length; j++) { %>
+                    <li><a href="/lectureSpecific/<%= lectureSpecificID %>/theme/<%= themeID %>/<%= themeIndex %>/task/<%= theme.tasks[i]._id %>/<%= i %>/slide/<%= theme.tasks[i].slides[j]._id %>/<%= j %"><%= theme.tasks[i].slides[j].name %></a></li>
+                    <% } %>
+                </ul>
+              </li>
+              <% } else { %>
+                <li><a><%= theme.tasks[i].task %></a>
+                  <ul>
+                    <% for(var j=0; j<theme.tasks[i].slides.length; j++) { %>
+                      <li><a><%= theme.tasks[i].slides[j].name %></a></li>
+                      <% } %>
+                  </ul>
+                </li>
+              <% } %>
+          <% } %>
+        </ul>
+      </div>
+      <div class="col-sm-9">
+        <div>
+          <%= theme.name %>
+        </div>
+        <div>
+          <%if (info == 'task') { %>
+            <p><%= task.task %></p>
+            <input type="text" id="answer">
+            <button id="answerTrue" class="btn">Patvirtinti</button>
+
+            <script>
+              var answerCorrect = "<%= task.answer %>";
+              $('#answerTrue').on('click', function() {
+                if($('#answer').val() == answerTrue) {
+                  $.ajax({
+                    url: 'http://localhost:3000/lectureSpecific/' + '<%= lectureSpecificID %>' + '/theme/' + '<%= themeID %>' + '/task/' + '<%= task._id %>' + '/answerTrue',
+                    type: 'POST',
+                    success: function(responseData, textStatus, jqXHR) {
+                      alert('Teisingas atsakymas');
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                      console.log('error');
+                    }
+                  });
+                } else {
+                  alert("Neteisingas atsakymas");
+                }
+              });
+            </script>
+        <% } %>
+        <% if (info == 'slide') { %>
+          <p><%= slide.name %></p>
+          <div><%= slide.info %></div>
+        <% } %>
+      </div>
+
+      <p align="center"><a href="#"><button type="button" class="btn btn-primary btn-xl">Atgal</button></a></p>
+
+    	<p align="center"><a href="#"><button type="button" class="btn btn-primary btn-xl">Tęsti</button></a></p>
+
+    </div>
+  </div>
+</div>
+<script>
+$(document).ready(function() {
+  $('#answerTrue').on('click', function() {
+  });
+});
+</script>
+</body>
+</html>

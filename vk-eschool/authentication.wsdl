@@ -17,21 +17,10 @@
         <wsdl:part name="user" type="xs:string"/>
         <wsdl:part name="role" type="xs:string"/>
         <wsdl:part name="id" type="xs:string"/>
-        <!--<wsdl:part name="isLogin" type="xs:boolean"/>
-        <wsdl:part name="isAdmin" type="xs:boolean"/>-->
     </wsdl:message>
-
-    <!--<wsdl:message name="checkTokenRequest">
-      <wsdl:part name="token" type="xs:string"/>
-    </wsdl:message>-->
-
-    <!--<wsdl:message name="checkTokenResponse">
-      <wsdl:part name="validToken" type="xs:boolean"/>
-    </wsdl:message>-->
 
 	<wsdl:portType name="authenticationBank">
         <wsdl:operation name="checkAuthentication">
-        <!--<wsdl:operation name="save">-->
         <wsdl:input message="authenticationRequest"/>
         <wsdl:output message="authenticationResponse"/>
         </wsdl:operation>
@@ -45,7 +34,6 @@
 	<wsdl:binding name="authenticationBankSoapBinding" type="authenticationBank">
         <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
 
-        <!--<wsdl:operation name="save">-->
         <wsdl:operation name="checkAuthentication">
             <soap:operation soapAction="checkAuthentication"/>
             <wsdl:input>
@@ -55,16 +43,6 @@
                 <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="literal"/>
             </wsdl:output>
         </wsdl:operation>
-
-    <!--<wsdl:operation name="checkTokenCreation">
-        <soap:operation soapAction="checkTokenCreation"/>
-        <wsdl:input>
-            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="literal"/>
-        </wsdl:input>
-        <wsdl:output>
-            <soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="literal"/>
-        </wsdl:output>
-    </wsdl:operation>-->
 
     </wsdl:binding>
 

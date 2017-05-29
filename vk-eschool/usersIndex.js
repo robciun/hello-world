@@ -5,8 +5,8 @@ var User = require('./dbConnections/user.js');
 var db = mongoose.connection;
 var app = express();
 
-var dbUsers = mongoose.dbUsers,
-Id = dbUsers.Id;
+var Schema = mongoose.Schema,
+ObjectId  = Schema.ObjectId;
 
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
@@ -92,4 +92,6 @@ app.post('/updatePw', function (req, res, next) {
   })
 });
 
-app.listen(8002);
+app.listen(8002, function () {
+  console.log('VK-auth app listening on port 8002!')
+})
