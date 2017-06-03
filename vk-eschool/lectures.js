@@ -18,7 +18,9 @@ app.get('/lectureList', function(req, res) {
 });
 
 app.get('/lectureSpecific/:id', function(req, res) {
-	Lecture.findById(req.params.id, function(result) {
+	Lecture.findById(req.params.id, function(error, result) {
+		if (error)
+			return console.log(error);
 		res.send(result);
 	});
 })
@@ -161,6 +163,6 @@ app.post('/lectureSpecific/:id/theme/:idTheme/task/:idTask/answerTrue', function
 })
 
 //module.exports = router;
-app.listen(3002, function () {
-  console.log('VK-auth app listening on port 3002!')
+app.listen(8002, function () {
+  console.log('VK-auth app listening on port 8002!')
 })

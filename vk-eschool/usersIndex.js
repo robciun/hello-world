@@ -101,6 +101,6 @@ app.put('/user/:id/updatePw', function(req, res) {
 });
 
 
-app.listen(8002, function () {
-  console.log('VK-auth app listening on port 8002!')
+app.listen(8003, function () {
+  console.log('VK-auth app listening on port 8003!')
 })

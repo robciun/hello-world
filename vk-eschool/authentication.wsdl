@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <wsdl:definitions name="authentication"
-    targetNamespace="http://localhost:8000/authentication"
-    xmlns="http://localhost:8000/authentication"
+    targetNamespace="http://localhost:8000/login"
+    xmlns="http://localhost:8000/login"
     xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
@@ -24,11 +24,6 @@
         <wsdl:input message="authenticationRequest"/>
         <wsdl:output message="authenticationResponse"/>
         </wsdl:operation>
-
-      <wsdl:operation name="checkAuthentication">
-      <wsdl:input message="authenticationRequest"/>
-      <wsdl:output message="authenticationResponse"/>
-      </wsdl:operation>
     </wsdl:portType>
 
 	<wsdl:binding name="authenticationBankSoapBinding" type="authenticationBank">
@@ -46,9 +41,9 @@
 
     </wsdl:binding>
 
-    <wsdl:service name="AuthenticationService">
+    <wsdl:service name="vkAuth">
         <wsdl:port binding="authenticationBankSoapBinding" name="authenticationPort">
-            <soap:address location="http://localhost:8001/vk-auth"/>
+            <soap:address location="http://localhost:8001/login"/>
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>

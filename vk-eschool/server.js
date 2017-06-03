@@ -6,37 +6,22 @@ var bodyparser = require('body-parser');
 var app = express();
 var request = require('request');
 
-//var routes = require('./routes/index');
-//var users = require('./vk-lectures/lectures');
-
-//app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-/*app.use(function(req,res,next){
-	req.db = db;
-	next();
-});*/
-
-//app.use('/', vk-lectures);
-//app.use('/users', users);
-
-//app.use(logger('dev'));
-//app.use(cookieParser());
-
-app.use(bodyparser.urlencoded({"extended":true}));
+app.use(bodyparser.urlencoded({extended:true}));
 app.use(express.static('views'));
 
 app.use("/login",express.static("views",{index:"login.html"}));
 app.use(exSession({
-	"secret":"DQW5435FWEFWERHER345HER15EGERVEH",
-	"resave":false,
-"saveUninitialized":true}));
+	secret:"DQW5435FWEFWERHER345HER15EGERVEH",
+	resave:false,
+	saveUninitialized:true}));
 
-var userProfileURL = 'http://localhost:8002/user/';
-var registrationURL = 'http://localhost:8002/registration/';
-var lectureListURL = 'http://localhost:3002/lectureList/';
-var userLectureURL = 'http://localhost:3002/lectureSpecific/user/';
-var lectureSpecificURL = 'http://localhost:3002/lectureSpecific/';
+var userProfileURL = 'http://localhost:8003/user/';
+var registrationURL = 'http://localhost:8003/registration/';
+var lectureListURL = 'http://localhost:8002/lectureList/';
+var userLectureURL = 'http://localhost:8002/lectureSpecific/user/';
+var lectureSpecificURL = 'http://localhost:8002/lectureSpecific/';
 
 app.get('/', function(req, res) {
 	if (req.session.logged) {
@@ -53,6 +38,14 @@ function lecturerTrue(req, res, next) {
 	res.redirect('/')
 }
 
+function loggedTrue(req, res, next) {
+	if(req.session.logged) {
+		return next();
+	}
+	res.redirect('/')
+}
+
+
 app.post('/login', function(req, res) {
 	if (req.session.logged) {
 		res.redirect('/');
@@ -65,7 +58,7 @@ app.post('/login', function(req, res) {
 			email : req.body.email,
 			password : req.body.password,
 		}
-		client.describe().AuthenticationService.authenticationPort;
+		client.describe().vkAuth.authenticationPort;
 		client.checkAuthentication(data, function(error, getLogin) {
 			if (error)
 			throw error;
@@ -89,13 +82,12 @@ app.post('/login', function(req, res) {
 	}
 });
 
-
 app.get('/registration', function(req, res) {
 	res.sendFile(__dirname + '/views/registration.html');
 });
 
 app.post('/registration', function(req, res) {
-	var usr = {
+	var parameters = {
 		url: registrationURL,
 		form: {
 			name: req.body.name,
@@ -105,7 +97,7 @@ app.post('/registration', function(req, res) {
 			role: req.body.userRole
 		}
 	};
-	request.post(usr, function(err, res, body) {
+	request.post(parameters, function(err, res, body) {
 		if(!err && res.statusCode == 200) {
 		console.log(body);
 		res.redirect('/login');
@@ -125,7 +117,7 @@ app.get('/logout', function(req, res) {
 	});
 });
 
-app.get('/userProfile', function(req, res) {
+app.get('/userProfile', loggedTrue, function(req, res) {
 	request(userProfileURL + req.session.uid, function(err, res, body) {
 		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
@@ -136,7 +128,7 @@ app.get('/userProfile', function(req, res) {
 	});
 });
 
-app.get('/userProfile/changeName', function(req, res) {
+app.get('/userProfile/changeName', loggedTrue, function(req, res) {
 	request(userProfileURL + req.session.uid, function(err, res, body) {
 		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
@@ -147,15 +139,15 @@ app.get('/userProfile/changeName', function(req, res) {
 	});
 });
 
-app.post('/userProfile/changeName', function(req, res) {
-	var changing = {
+app.post('/userProfile/changeName', loggedTrue, function(req, res) {
+	var parameters = {
 		method: 'PUT',
 		url: userProfileURL + req.session.uid + '/updateName',
 		form: {
 				name: req.body.name
 		}
 	};
-	request(changing, function(err, res, body) {
+	request(parameters, function(err, res, body) {
 		if (!err && res.statusCode == 200){
 		res.redirect('/userProfile');
 	} else {
@@ -164,7 +156,7 @@ app.post('/userProfile/changeName', function(req, res) {
 	});
 });
 
-app.get('/userProfile/changePw', function(req, res) {
+app.get('/userProfile/changePw', loggedTrue, function(req, res) {
 	request(userProfileURL + req.session.uid, function(err, res, body) {
 		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
@@ -175,8 +167,8 @@ app.get('/userProfile/changePw', function(req, res) {
 	});
 });
 
-app.post('/userProfile/changePw', function(req, res) {
-	var changing = {
+app.post('/userProfile/changePw', loggedTrue, function(req, res) {
+	var parameters = {
 		method: 'PUT',
 		url: userProfileURL + req.session.uid + '/updatePw',
 		form: {
@@ -185,7 +177,7 @@ app.post('/userProfile/changePw', function(req, res) {
 				confirmPw: req.body.confirmPw
 		}
 	};
-	request(changing, function(err, res, body) {
+	request(parameters, function(err, res, body) {
 		if (!err && res.statusCode == 200) {
 		res.redirect('/userProfile');
 	} else {
@@ -194,18 +186,18 @@ app.post('/userProfile/changePw', function(req, res) {
 	});
 });
 
-app.get('/lectureList', function(req, res) {
+app.get('/lectureList', loggedTrue, function(req, res) {
 	request(lectureListURL, function(err, res, body) {
 		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
-		res.render('lectureSpecificMenu.ejs', {lectureList: parseJson, role: req.sessions.role});
+		res.render('lectureSpecificMenu.ejs', {lectureList: parseJson, role: req.session.role});
 	} else {
 		throw err;
 	}
 	});
 });
 
-app.get('/userLecture', lecturerTrue, function(req, res) {
+app.get('/userLecture', loggedTrue, lecturerTrue, function(req, res) {
 	request(userLectureURL + req.session.uid, function(err, res, body) {
 		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
@@ -216,12 +208,12 @@ app.get('/userLecture', lecturerTrue, function(req, res) {
 	});
 });
 
-app.get('/lectureAdd', lecturerTrue, function(req, res) {
+app.get('/lectureAdd', loggedTrue, lecturerTrue, function(req, res) {
 	res.sendFile(__dirname + '/views/lectureActions.html');
 });
 
-app.post('/lectureAdd', lecturerTrue, function(req, res) {
-		var lect = {
+app.post('/lectureAdd', loggedTrue, lecturerTrue, function(req, res) {
+		var parameters = {
 			url: lectureSpecificURL,
 			form: {
 			programmingLanguage: req.body.programmingLanguage,
@@ -232,7 +224,7 @@ app.post('/lectureAdd', lecturerTrue, function(req, res) {
 		}
 	};
 
-	request.post(lect, function(err, res, body) {
+	request.post(parameters, function(err, res, body) {
 		if (!error && res.statusCode == 200) {
 		res.redirect('/userLecture');
 	} else {
@@ -241,7 +233,7 @@ app.post('/lectureAdd', lecturerTrue, function(req, res) {
 	})
 });
 
-app.get('lectureSpecific/:id', function(req, res) {
+app.get('lectureSpecific/:id', loggedTrue, function(req, res) {
 	request(lectureSpecificURL + req.params.id, function(err, res, body) {
 		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
@@ -257,12 +249,12 @@ app.get('lectureSpecific/:id', function(req, res) {
 	});
 });
 
-app.get('/lectureSpecific/:id/theme/:idTheme/:i', function(req, res) {
+app.get('/lectureSpecific/:id/theme/:idTheme/:i', loggedTrue, function(req, res) {
 	request(lectureSpecificURL + req.params.id, function(err, res, body) {
 		if (!err && res.statusCode == 200) {
 			var parseJson = JSON.parse(body),
 			userRights = [],
-			theme = parseJson.themes[req.param.i];
+			theme = parseJson.themes[req.params.i];
 
 			for (var i = 0; i < theme.tasks.length; i++) {
 				userRights.push(false);
@@ -288,13 +280,13 @@ app.get('/lectureSpecific/:id/theme/:idTheme/:i', function(req, res) {
 	});
 });
 
-app.get('/lectureSpecific/:id/theme/:idTheme/:i/task/:idTask/:idTsk', function(req, res) {
+app.get('/lectureSpecific/:id/theme/:idTheme/:i/task/:idTask/:idTsk', loggedTrue, function(req, res) {
 	request(lectureSpecificURL + req.params.id, function(err, res, body) {
 		if (!err && res.statusCode == 200) {
 			var parseJson = JSON.parse(body),
 			Tsk = parseJson.themes[req.params.i].tasks[req.params.idTsk],
 			userRights = [],
-			theme = parseJson.themes[req.param.i];
+			theme = parseJson.themes[req.params.i];
 
 			for (var i = 0; i < theme.tasks.length; i++) {
 				userRights.push(false);
@@ -313,7 +305,7 @@ app.get('/lectureSpecific/:id/theme/:idTheme/:i/task/:idTask/:idTsk', function(r
 				lectureSpecificID: req.params.id,
 				themeIndex: req.params.i,
 				info: 'task',
-				task: t,
+				task: Tsk,
 				access: userRights});
 			} else {
 				throw err;
@@ -321,14 +313,14 @@ app.get('/lectureSpecific/:id/theme/:idTheme/:i/task/:idTask/:idTsk', function(r
 	});
 });
 
-app.post('/lectureSpecific/:id/theme/:idTheme/task/:idTask/answerTrue', function(req, res) {
-	var answ = {
+app.post('/lectureSpecific/:id/theme/:idTheme/task/:idTask/answerTrue', loggedTrue, function(req, res) {
+	var parameters = {
 		url: 'http://localhost:3002/lectureSpecific/' + req.params.id + '/theme/' + req.params.idTheme + '/task/' + req.params.idTask + '/answerTrue',
 		form: {
 			userID: req.session.uid
 		}
 	};
-	request.post(answ, function(err, res, body) {
+	request.post(parameters, function(err, res, body) {
 		if (!err && res.statusCode == 200) {
 			var parseJson = JSON.parse(body);
 			res.send(parseJson);
@@ -338,12 +330,12 @@ app.post('/lectureSpecific/:id/theme/:idTheme/task/:idTask/answerTrue', function
 	});
 });
 
-app.get('/lectureSpecific/:id/theme/:idTheme/:i/task/:idTask/:idTsk/slide/:idSlide/:idSlid', function(req,res){
+app.get('/lectureSpecific/:id/theme/:idTheme/:i/task/:idTask/:idTsk/slide/:idSlide/:idSlid', loggedTrue, function(req,res){
 	request(lectureSpecificURL + req.params.id, function(err, res, body) {
 		if (!err && res.statusCode == 200) {
 			var parseJson = JSON.parse(body),
 			userRights = [],
-			theme = parseJson.themes[req.param.i];
+			theme = parseJson.themes[req.params.i];
 
 			for (var i = 0; i < theme.tasks.length; i++) {
 				userRights.push(false);
@@ -371,7 +363,7 @@ app.get('/lectureSpecific/:id/theme/:idTheme/:i/task/:idTask/:idTsk/slide/:idSli
 });
 
 
-app.get('/lectureSpecific/:id/delete', lecturerTrue, function(req, res) {
+app.get('/lectureSpecific/:id/delete', loggedTrue, lecturerTrue, function(req, res) {
 	request(lectureSpecificURL + req.params.id, function(err, res, body) {
 		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
@@ -392,15 +384,15 @@ app.get('/lectureSpecific/:id/delete', lecturerTrue, function(req, res) {
 	});
 });
 
-app.post('/answerTrue', function(req, res) {
-	var answ = {
+app.post('/answerTrue', loggedTrue, function(req, res) {
+	var parameters = {
 		method: 'POST',
 		url: userProfileURL + req.session.uid + '/updateName',
 		form: {
 			name: req.body.name
 		}
 	};
-	request(answ, function(err, res, body) {
+	request(parameters, function(err, res, body) {
 		if (!err && res.statusCode == 200) {
 			res.redirect('/userProfile');
 		} else {
@@ -409,6 +401,6 @@ app.post('/answerTrue', function(req, res) {
 	});
 });
 
-app.listen(3000, function () {
-  console.log('VK-auth app listening on port 3000!')
+app.listen(8080, function () {
+  console.log('VK-auth app listening on port 8080!')
 })

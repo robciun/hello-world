@@ -2,12 +2,12 @@ var soap = require('soap');
 var http = require('http');
 var xml = require('fs').readFileSync('authentication.wsdl', 'utf8');
 var mongoose = require('mongoose');
-var User = require('./dbConnections/user');
+var User = require('./dbConnections/user.js');
 var mongoose = require('mongoose');
 //mongoose.connect('mongodb://localhost/emokykla');
 
 var service = {
-    AuthenticationService : {
+    vkAuth : {
         authenticationPort : {
 					checkAuthentication: function(args, callback) {
             User.findOne({'email': args.email}, function(err, getUser) {
