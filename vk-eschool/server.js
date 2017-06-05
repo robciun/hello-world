@@ -3,19 +3,21 @@ var url = 'http://localhost:8001/login?wsdl';
 var express = require('express');
 var exSession = require('express-session');
 var bodyparser = require('body-parser');
-var app = express();
+var validator = require('express-validator');
 var request = require('request');
 
+var app = express();
+
 app.set('view engine', 'ejs');
-
 app.use(bodyparser.urlencoded({extended:true}));
-app.use(express.static('views'));
-
-app.use("/login",express.static("views",{index:"login.html"}));
+app.use(validator());
 app.use(exSession({
-	secret:"DQW5435FWEFWERHER345HER15EGERVEH",
+	secret:'DQW5435FWEFWERHER345HER15EGERVEH',
 	resave:false,
 	saveUninitialized:true}));
+app.use('/login',express.static('views',{index:"login.html"}));
+app.use(express.static('views'));
+
 
 var userProfileURL = 'http://localhost:8003/user/';
 var registrationURL = 'http://localhost:8003/registration/';
@@ -50,10 +52,20 @@ app.post('/login', function(req, res) {
 	if (req.session.logged) {
 		res.redirect('/');
 	} else {
-		soap.createClient(url, function(err, client) {
-			if (err) {
-				throw err;
+		soap.createClient(url, function(error, client) {
+			if (error) {
+				throw error;
 			}
+
+			//req.checkBody("email", "Blogas emailas").isEmail();
+			//req.ckeckBody("password", "Iveskite slaptzodi ilgesni negu 4 simboliai").isLength({min:4, max: 50});
+
+			/*var errors = req.validationerrors();
+			if (errors) {
+				res.send(errors);
+				return;
+			}*/
+
 		var data = {
 			email : req.body.email,
 			password : req.body.password,
@@ -79,7 +91,7 @@ app.post('/login', function(req, res) {
 			}
 		});
 	});
-	}
+}
 });
 
 app.get('/registration', function(req, res) {
@@ -97,8 +109,8 @@ app.post('/registration', function(req, res) {
 			role: req.body.userRole
 		}
 	};
-	request.post(parameters, function(err, res, body) {
-		if(!err && res.statusCode == 200) {
+	request.post(parameters, function(error, response, body) {
+		if(!error && response.statusCode == 200) {
 		console.log(body);
 		res.redirect('/login');
 	} else {
@@ -110,7 +122,7 @@ app.post('/registration', function(req, res) {
 app.get('/logout', function(req, res) {
 	req.session.destroy(function(err) {
 		if(err) {
-			throw err;
+			console.log(err);
 		} else {
 			res.redirect('/login');
 		}
@@ -192,8 +204,9 @@ app.get('/lectureList', loggedTrue, function(req, res) {
 		var parseJson = JSON.parse(body);
 		res.render('lectureSpecificMenu.ejs', {lectureList: parseJson, role: req.session.role});
 	} else {
-		throw err;
-	}
+		console.log('error: ', error);
+		console.log('response: ', response & response.statusCode);
+		}
 	});
 });
 
@@ -203,8 +216,9 @@ app.get('/userLecture', loggedTrue, lecturerTrue, function(req, res) {
 		var parseJson = JSON.parse(body);
 		res.render('userLecture.ejs', {lectureList: parseJson});
 	} else {
-		throw err;
-	}
+		console.log('error: ', error);
+		console.log('response: ', response & response.statusCode);
+		}
 	});
 });
 

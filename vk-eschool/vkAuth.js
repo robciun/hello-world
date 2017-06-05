@@ -4,7 +4,10 @@ var xml = require('fs').readFileSync('authentication.wsdl', 'utf8');
 var mongoose = require('mongoose');
 var User = require('./dbConnections/user.js');
 var mongoose = require('mongoose');
-//mongoose.connect('mongodb://localhost/emokykla');
+
+mongoose.connect('mongodb://robciun:vkdbpw951@ds111622.mlab.com:11622/vkeschool', function(err) {
+  if (err) return console.log(err);
+})
 
 var service = {
     vkAuth : {

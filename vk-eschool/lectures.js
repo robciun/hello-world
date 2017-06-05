@@ -1,18 +1,25 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var validator = require('express-validator');
 var app = express();
 var mongoose = require('mongoose');
 var Lecture = require('./dbConnections/lecture.js');
 
+var Schema = mongoose.Schema,
+ObjectId  = Schema.ObjectId;
+
+mongoose.connect('mongodb://robciun:vkdbpw951@ds111622.mlab.com:11622/vkeschool', function(err) {
+  if (err) return console.log(err);
+})
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.get('/', function(req, res) {
-	res.send('respond with a resource');
-});
 
 app.get('/lectureList', function(req, res) {
-	Lecture.find({}, function(result) {
+	Lecture.find({}, function(err, result) {
+		if (err) return console.log(err);
+
 		res.send(result);
 	});
 });
@@ -63,17 +70,16 @@ app.post('/lectureSpecific', function(req, res) {
 		if (err) {
 			return console.log(err);
 		}
-		console.log('Lecture created');
+		console.log('Lecture created: ', newLecture);
 
 		res.send(result);
-	});
-});
+	})
+})
 
 app.post('/lectureSpecific/:id/addTask', function(req, res) {
 	Lecture.findById(req.params.id, function(err, newLecture) {
-		if (err) {
+		if (err)
 			throw err;
-		} else {
 		newLecture.tasks.push({
 			task: req.body.task,
 			answer: req.body.answer,
@@ -81,7 +87,6 @@ app.post('/lectureSpecific/:id/addTask', function(req, res) {
 		});
 		newLecture.save();
 		res.send(newLecture);
-	}
 	})
 });
 
@@ -148,7 +153,7 @@ app.delete('/lectureSpecific/:id', function(req, res) {
 		}
 		res.send('Successful delete');
 	});
-});
+})
 
 app.post('/lectureSpecific/:id/theme/:idTheme/task/:idTask/answerTrue', function(req, res) {
 	Lecture.findById(req.params.id, function(err, res) {
@@ -162,7 +167,6 @@ app.post('/lectureSpecific/:id/theme/:idTheme/task/:idTask/answerTrue', function
 	});
 })
 
-//module.exports = router;
 app.listen(8002, function () {
   console.log('VK-auth app listening on port 8002!')
 })

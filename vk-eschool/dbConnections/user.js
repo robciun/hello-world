@@ -21,14 +21,10 @@ var dbUsers = new Schema({
     required: true
   }
 });
-//var user = module.exports = mongoose.model('users', dbUsers);
 
 dbUsers.pre('save', function save(next) {
   var user = this;
   if( this.isModified('password') || this.isNew) {
-  /*if(!user.isModified('password') {
-    return next();
-  }*/
     bcrypt.genSalt(10, function(err, salt) {
       if (err) {
         return next(err);
@@ -46,39 +42,11 @@ dbUsers.pre('save', function save(next) {
   }
 });
 
-/*module.exports.checkUserMatch = function(email, password, callback) {
-  user.findOne({email:email, password:password},
-  function(err, match) {
-    if (err) {
-
-    }
-    callback && callback(match);
-  });
-}
-
-module.exports.createUser = function(userInfo, callback) {
-  user.create(userInfo, callback);
-}
-
-module.exports.checkUserExistance = function(email, callback) {
-  user.findOne({email:email},
-  function(err, match) {
-    callback && callback(match);
-  });
-}
-
-module.exports.getRole = function(userID, email, callback) {
-  user.findOne({id:userID, email:email},
-  function(err, match) {
-    console.log(match);
-  });
-}*/
-
 dbUsers.methods.checkPasswordMatch = function(pw, hs){
   bcrypt.compare(pw, this.password, function(err, matchTrue){
-    /*if(err){
+    if(err){
       return hs(err);
-    }*/
+    }
     hs(err, matchTrue);
   });
 };

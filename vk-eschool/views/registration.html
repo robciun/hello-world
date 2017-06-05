@@ -71,12 +71,13 @@
 
 	<br>
 	<br>
+	</form>
+	
+	<p><button id="submit" class="btn btn-primary">Registruotis</button></p>
 
-	<p><button type="submit" class="btn btn-primary">Registruotis</button></p>
+	<p><a href="/login"><button type="button" class="btn btn-primary">Atgal</button></a></p>
 
-	<p><a href="/login"><button class="btn btn-primary">Atgal</button></a></p>
-
-  </form>
+  
 
 <footer>
   <p align="center" class="blurry-text" ><font align="center" size="2">Visos teisės saugomos</font></p>
@@ -87,7 +88,7 @@
     $('#submit').on('click', function() {
       var form = {
         name: $('input[name="name"]').val(),
-        email: $('input[name="email"]'),val(),
+        email: $('input[name="email"]').val(),
         password: $('input[name="password"]').val(),
         password2: $('input[name="password2"]').val(),
         userRole: $('input[type="radio"][name="userRole"]:checked').val()

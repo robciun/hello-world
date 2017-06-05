@@ -2,8 +2,11 @@ var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var User = require('./dbConnections/user.js');
-var db = mongoose.connection;
 var app = express();
+
+mongoose.connect('mongodb://robciun:vkdbpw951@ds111622.mlab.com:11622/vkeschool', function(err) {
+  if (err) return console.log(err);
+})
 
 var Schema = mongoose.Schema,
 ObjectId  = Schema.ObjectId;
@@ -19,7 +22,6 @@ app.post('/registration', function(req, res) {
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
-      password2: req.body.password2,
       role: req.body.role
     });
     newUser.save(function(err){
@@ -33,11 +35,9 @@ app.post('/registration', function(req, res) {
 
 app.get('/users', function(req, res) {
   User.find({}, function(err, result) {
-    if(err) {
+    if(err)
       return console.log(err);
-    } else {
     res.send(result);
-  }
   });
 })
 
