@@ -1,11 +1,12 @@
+//var dbUsers = mongoose.Schema({
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 var Schema = mongoose.Schema;
-//var dbUsers = mongoose.Schema({
 var dbUsers = new Schema({
 
   email:{
     type: String,
+    unique: true,
     required: true
   },
   password:{
@@ -22,7 +23,7 @@ var dbUsers = new Schema({
   }
 });
 
-dbUsers.pre('save', function save(next) {
+dbUsers.pre('save', function(next) {
   var user = this;
   if( this.isModified('password') || this.isNew) {
     bcrypt.genSalt(10, function(err, salt) {
@@ -47,7 +48,7 @@ dbUsers.methods.checkPasswordMatch = function(pw, hs){
     if(err){
       return hs(err);
     }
-    hs(err, matchTrue);
+    hs(null, matchTrue);
   });
 };
 

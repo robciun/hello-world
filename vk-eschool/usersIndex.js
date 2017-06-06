@@ -1,10 +1,15 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var connectDb = require('./connectDb/database.js');
 var bodyParser = require('body-parser');
 var User = require('./dbConnections/user.js');
 var app = express();
 
-mongoose.connect('mongodb://robciun:vkdbpw951@ds111622.mlab.com:11622/vkeschool', function(err) {
+/*mongoose.connect('mongodb://robciun:vkdbpw951@ds111622.mlab.com:11622/vkeschool', function(err) {
+  if (err) return console.log(err);
+})*/
+
+mongoose.connect(connectDb.database, function(err) {
   if (err) return console.log(err);
 })
 

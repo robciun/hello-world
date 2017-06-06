@@ -19,9 +19,9 @@
     <li><font size="6" color="white">@VK</font></li>
     <li><a href='/userProfile'>Paskyra</a></li>
     <li><a href='/lectureList'>Pamokos</a></li>
-      <%if (role == 'lecturer') { %>
-        <li><a href="/userLecture">Mano pamokos</a></li>
-      <% } %>
+
+      <li><a href='/userLecture'>Mano pamokos</a></li>
+
 	</ul>
 	<ul class="nav navbar-nav navbar-right">
 		<li><a href="/logout"><span class="glyphicon glyphicon-off"></span>Atsijungti</a></li>
@@ -87,7 +87,7 @@
 			</div>
 </div>
 <br>
-<% for(var i=0; i<lectures.length; i++) { %>
+<% for(var i=0; i<lectureList.length; i++) { %>
   <div class="row">
     <div class="col-sm-4 col-md-2">
       <p><%= lectureList[i].programmingLanguage %></p>
@@ -111,7 +111,7 @@
       <% } %>
     </div>
     <div class="col-sm-4 col-md-2">
-      <p align="center"><a href="/lectureSpecific/<%= lectureList[i]._id %"><button type="button" class="btn btn-primary btn-xl">Pradėti</button></a></p>
+      <p align="center"><a href="/lectureSpecific/<%= lectureList[i]._id %>"><button type="button" class="btn btn-primary btn-xl">Pradėti</button></a></p>
     </div>
   <% } %>
 

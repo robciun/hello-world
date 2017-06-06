@@ -29,4 +29,6 @@ var dbLectures = new Schema({
   }]
 });
 
-module.exports = mongoose.model('Lecture', dbLectures);
+var Lecture = mongoose.model('Lecture', dbLectures);
+
+module.exports = Lecture;

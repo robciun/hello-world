@@ -19,9 +19,8 @@
     <li><font size="6" color="white">@VK</font></li>
     <li><a href='/userProfile'>Paskyra</a></li>
     <li><a href='/lectureList'>Pamokos</a></li>
-      <%if (role == 'lecturer') { %>
-        <li><a href="/userLecture">Mano pamokos</a></li>
-      <% } %>
+    <li><a href='/userLecture'>Mano pamokos</a></li>
+
 	</ul>
 	<ul class="nav navbar-nav navbar-right">
 		<li><a href="/logout"><span class="glyphicon glyphicon-off"></span>Atsijungti</a></li>
@@ -33,7 +32,7 @@
 	<div class="panel-body">
 		<div class="row">
 			<div class="col-sm-2">
-			<h1 align="left"><%= userName %></h1>
+			<h1><%= user.name %></h1>
 			<img  align="center" class="img-responsive" src="img/student.jpg">
     </div>
 			<br>

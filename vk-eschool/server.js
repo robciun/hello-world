@@ -3,14 +3,14 @@ var url = 'http://localhost:8001/login?wsdl';
 var express = require('express');
 var exSession = require('express-session');
 var bodyparser = require('body-parser');
-var validator = require('express-validator');
+//var validator = require('express-validator');
 var request = require('request');
 
 var app = express();
 
 app.set('view engine', 'ejs');
 app.use(bodyparser.urlencoded({extended:true}));
-app.use(validator());
+//app.use(validator());
 app.use(exSession({
 	secret:'DQW5435FWEFWERHER345HER15EGERVEH',
 	resave:false,
@@ -130,7 +130,7 @@ app.get('/logout', function(req, res) {
 });
 
 app.get('/userProfile', loggedTrue, function(req, res) {
-	request(userProfileURL + req.session.uid, function(err, res, body) {
+	request(userProfileURL + req.session.uid, function(err, response, body) {
 		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
 		res.render('userProfile.ejs', {user: parseJson});
@@ -141,7 +141,7 @@ app.get('/userProfile', loggedTrue, function(req, res) {
 });
 
 app.get('/userProfile/changeName', loggedTrue, function(req, res) {
-	request(userProfileURL + req.session.uid, function(err, res, body) {
+	request(userProfileURL + req.session.uid, function(err, response, body) {
 		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
 		res.render('changeName.ejs', {user: parseJson});
@@ -159,7 +159,7 @@ app.post('/userProfile/changeName', loggedTrue, function(req, res) {
 				name: req.body.name
 		}
 	};
-	request(parameters, function(err, res, body) {
+	request(parameters, function(err, response, body) {
 		if (!err && res.statusCode == 200){
 		res.redirect('/userProfile');
 	} else {
@@ -169,7 +169,7 @@ app.post('/userProfile/changeName', loggedTrue, function(req, res) {
 });
 
 app.get('/userProfile/changePw', loggedTrue, function(req, res) {
-	request(userProfileURL + req.session.uid, function(err, res, body) {
+	request(userProfileURL + req.session.uid, function(err, response, body) {
 		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
 		res.render('changePw.ejs', {user: parseJson});
@@ -189,7 +189,7 @@ app.post('/userProfile/changePw', loggedTrue, function(req, res) {
 				confirmPw: req.body.confirmPw
 		}
 	};
-	request(parameters, function(err, res, body) {
+	request(parameters, function(err, response, body) {
 		if (!err && res.statusCode == 200) {
 		res.redirect('/userProfile');
 	} else {
@@ -199,7 +199,7 @@ app.post('/userProfile/changePw', loggedTrue, function(req, res) {
 });
 
 app.get('/lectureList', loggedTrue, function(req, res) {
-	request(lectureListURL, function(err, res, body) {
+	request(lectureListURL, function(err, response, body) {
 		if (!err && res.statusCode == 200) {
 		var parseJson = JSON.parse(body);
 		res.render('lectureSpecificMenu.ejs', {lectureList: parseJson, role: req.session.role});

@@ -1,14 +1,19 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var validator = require('express-validator');
+//var validator = require('express-validator');
 var app = express();
+var connectDb = require('./connectDb/database.js');
 var mongoose = require('mongoose');
 var Lecture = require('./dbConnections/lecture.js');
 
 var Schema = mongoose.Schema,
 ObjectId  = Schema.ObjectId;
 
-mongoose.connect('mongodb://robciun:vkdbpw951@ds111622.mlab.com:11622/vkeschool', function(err) {
+/*mongoose.connect('mongodb://robciun:vkdbpw951@ds111622.mlab.com:11622/vkeschool', function(err) {
+  if (err) return console.log(err);
+})*/
+
+mongoose.connect(connectDb.database, function(err) {
   if (err) return console.log(err);
 })
 
